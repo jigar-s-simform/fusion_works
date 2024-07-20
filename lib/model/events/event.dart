@@ -5,7 +5,9 @@ part 'event.g.dart';
 enum EventType {
   HOLIDAY,
   FLOATER,
-  EVENT,
+  EVENT;
+
+  bool get isEvent => this == EVENT;
 }
 
 enum EventMode {

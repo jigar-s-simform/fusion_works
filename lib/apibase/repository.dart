@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:fusion_works/model/events/event_response.dart';
 import 'package:fusion_works/model/response/login/token.dart';
 import 'package:fusion_works/model/response/skill/skill_dm.dart';
 
@@ -46,6 +47,14 @@ class Repository {
 
   Future<List<SkillDm>> getUserSkills() async {
     return _apiCall<List<SkillDm>>(request: _apiService.getSkill);
+  }
+
+  Future<EventResponse?> getEvents() async {
+    return _apiCall<EventResponse>(
+      request: () => _apiService.getEventList(
+        {"startDate": "2024-07-9", "endDate": "2024-07-21"},
+      ),
+    );
   }
 
   Future<T> _apiCall<T>({

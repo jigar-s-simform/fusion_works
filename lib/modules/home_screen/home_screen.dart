@@ -28,7 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
   // List of widgets representing different pages
   static final List<Widget> _widgetOptions = <Widget>[
     const EventsScreen().withProviders([
-      createProviderFor<EventStore>(EventStore()..getAllEvents()),
+      createProviderFor<EventStore>(EventStore()..fetchAllEvents()),
     ]),
     SkillsScreen().withProviders(
       [

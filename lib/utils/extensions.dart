@@ -123,6 +123,7 @@ extension EventConversion on Event {
       startTime: startTime,
       endTime: endTime,
       color: emode.isOnline ? AppColors.lightGreen : AppColors.lightOrange,
+      isAllDay: !etype.isEvent,
     );
   }
 }

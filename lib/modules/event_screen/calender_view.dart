@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_neat_and_clean_calendar/flutter_neat_and_clean_calendar.dart';
 import 'package:fusion_works/utils/extensions.dart';
 import 'package:provider/provider.dart';
@@ -8,20 +9,8 @@ import '../../values/strings.dart';
 import 'event_store.dart';
 import 'time_line.dart';
 
-class CalenderView extends StatefulWidget {
+class CalenderView extends StatelessObserverWidget {
   const CalenderView({super.key});
-
-  @override
-  State<CalenderView> createState() => _CalenderViewState();
-}
-
-class _CalenderViewState extends State<CalenderView> {
-  bool showEvents = true;
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +58,7 @@ class _CalenderViewState extends State<CalenderView> {
                 eventListBuilder: (BuildContext context,
                     List<NeatCleanCalendarEvent> eventList) {
                   return Expanded(
-                    child: TimelineEventCard(event: eventList),
+                    child: TimelineEventCard(events: eventList),
                   );
                 },
               ),
