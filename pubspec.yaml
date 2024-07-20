@@ -25,6 +25,7 @@ dependencies:
   dio: ^5.5.0+1 # Added to avoid warning
   device_preview: 1.1.0 # Device Preview
   envied: ^0.5.4+1 # Env secrets
+  flutter_neat_and_clean_calendar: ^0.3.18+40
 
 dev_dependencies:
   flutter_test:

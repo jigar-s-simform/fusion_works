@@ -1,0 +1,82 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_neat_and_clean_calendar/flutter_neat_and_clean_calendar.dart';
+import 'package:fusion_works/utils/extensions.dart';
+import 'package:provider/provider.dart';
+
+import '../../values/app_colors.dart';
+import '../../values/strings.dart';
+import 'event_store.dart';
+import 'time_line.dart';
+
+class CalenderView extends StatefulWidget {
+  const CalenderView({super.key});
+
+  @override
+  State<CalenderView> createState() => _CalenderViewState();
+}
+
+class _CalenderViewState extends State<CalenderView> {
+  bool showEvents = true;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final eventStore = Provider.of<EventStore>(context);
+    final events = eventStore.events;
+    final eventList = <NeatCleanCalendarEvent>[];
+    for (var i = 0; i < events.length; i++) {
+      eventList.add(events[i].toNeatCleanCalendarEvent());
+    }
+
+    return Scaffold(
+      body: SafeArea(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                left: 16,
+                right: 16,
+                top: 12,
+              ),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  AppStrings.calendar,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+              ),
+            ),
+            Expanded(
+              child: Calendar(
+                hideTodayIcon: true,
+                startOnMonday: true,
+                eventsList: eventList,
+                isExpandable: true,
+                selectedTodayColor: AppColors.blue,
+                todayColor: AppColors.blue,
+                selectedColor: AppColors.blue,
+                todayButtonText: AppStrings.calendar,
+                eventColor: AppColors.blue,
+                isExpanded: true,
+                dayOfWeekStyle: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      fontSize: 10,
+                      color: AppColors.black,
+                    ),
+                eventListBuilder: (BuildContext context,
+                    List<NeatCleanCalendarEvent> eventList) {
+                  return Expanded(
+                    child: TimelineEventCard(event: eventList),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
