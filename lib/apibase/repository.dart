@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
+import 'package:fusion_works/model/response/login/token.dart';
 
 import '../model/response/api_response.dart';
 import '../model/response/invalid_response_model.dart';
-import '../model/response/profile/profile.dart';
 import '../model/response/user/user.dart';
 import '../values/strings.dart';
 import 'api_service.dart';
@@ -17,19 +17,19 @@ class Repository {
       Repository._initialize(ApiServiceType.chatService);
   static final Repository instance =
       Repository._initialize(ApiServiceType.apiService);
-
   final ApiService _apiService;
 
-  Future<User> getPostFromId(Map<String, dynamic> id) async {
-    return _apiCall<User>(request: () => _apiService.login(id));
+  Future<User> getProfileFromEmail(String email) async {
+    return _apiCall<User>(request: () => _apiService.getProfile(email));
   }
 
-  Future<Profile> getProfileFromEmail(String email) async {
-    return _apiCall<Profile>(request: () => _apiService.getProfile(email));
+  Future<Token> login(String email, String password) async {
+    return _apiCall<Token>(request: () => _apiService.login(email, password));
   }
 
-  Future<Profile> getProfileFromEmail(String email) async {
-    return _apiCall<Profile>(request: () => apiService.getProfile(email));
+  Future<Token> register(String email, String password) async {
+    return _apiCall<Token>(
+        request: () => _apiService.register(email, password));
   }
 
   Future<T> _apiCall<T>({

@@ -16,7 +16,7 @@ class ProfileScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Observer(
-              builder: (context) => Text('Data: ${profileStore.profile}'),
+              builder: (context) => Text('Data: ${profileStore.userInfo}'),
             ),
             FilledButton(
               onPressed: () {

@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
-import 'package:fusion_works/model/response/profile/profile.dart';
 import 'package:retrofit/retrofit.dart';
 
 import '../model/model.dart';
+import '../model/response/login/token.dart';
 
 part 'api_service.g.dart';
 
@@ -12,13 +12,21 @@ abstract class ApiService {
 
   /// Login
   @POST('/login')
-  Future<APIResponse<User>> login(
-    @Body() Map<String, dynamic> loginRequestBean,
+  Future<APIResponse<Token>> login(
+    @Query('email') String email,
+    @Query('password') String password,
+  );
+
+  /// Register
+  @POST('/register')
+  Future<APIResponse<Token>> register(
+    @Query('email') String email,
+    @Query('password') String password,
   );
 
   /// Profile
   @GET('/profile')
-  Future<APIResponse<Profile>> getProfile(
+  Future<APIResponse<User>> getProfile(
     @Query('email') String email,
   );
 }

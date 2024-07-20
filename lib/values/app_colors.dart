@@ -4,7 +4,7 @@ class AppColors {
   const AppColors._();
 
   static const Color colorAccent = Color(0xff068CDE);
-  static const Color colorPrimary = Color(0xff1A1B1D);
+  static const Color colorPrimary = Color.fromRGBO(6, 75, 172, 1);
   static const Color colorAlpha50Primary = Color(0x801A1B1D);
   static const Color colorWeightTheme = Color(0xFFEDB55B);
   static const Color white = Color(0xFFFAFAFA);
@@ -18,4 +18,10 @@ class AppColors {
   static const Color lightGrey = Color(0xFFE3E3E8);
   static const Color mediumGrey = Color(0xFF6E7281);
   static const Color black = Color(0xFF000000);
+
+  // Widget colors
+  static const Color buttonColor = Color.fromRGBO(6, 75, 172, 1);
+  static const Color loginLightText = Color.fromRGBO(78, 80, 89, 1);
+  static const Color registerLightText = Color.fromRGBO(78, 80, 89, 1);
+  static const Color hintText = Color.fromRGBO(117, 120, 132, 1);
 }

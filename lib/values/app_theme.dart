@@ -6,20 +6,24 @@ class AppTheme {
 
   static final ThemeData lightTheme = ThemeData(
     colorSchemeSeed: AppColors.colorPrimary,
+    fontFamily: "Fonts/Montserrat.ttf",
     textTheme: const TextTheme(
-      titleLarge: TextStyle(
-        fontSize: 22,
+      bodyMedium: TextStyle(
+        fontWeight: FontWeight.w400,
+        color: AppColors.hintText,
+        fontFamily: 'Montserrat',
+      ),
+      bodySmall: const TextStyle(
+        fontWeight: FontWeight.w500,
+        fontFamily: 'Montserrat',
+      ),
+      titleMedium: TextStyle(
+        fontFamily: 'Montserrat',
         fontWeight: FontWeight.w600,
       ),
-      bodySmall: TextStyle(
-        fontSize: 12,
-        fontWeight: FontWeight.w500,
-        color: AppColors.grey,
-      ),
-      bodyMedium: TextStyle(
-        fontSize: 14,
-        fontWeight: FontWeight.w500,
-        color: AppColors.black,
+      labelLarge: TextStyle(
+        fontFamily: 'Montserrat',
+        fontWeight: FontWeight.w600,
       ),
     ),
   );
