@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:fusion_works/utils/extensions.dart';
+import 'package:provider/provider.dart';
 
 import '../../gen/assets.gen.dart';
 import '../../values/app_colors.dart';
 import '../../widgets/bottom_tab/bottom_tab.dart';
 import '../event_screen/event_screen.dart';
 import '../event_screen/event_store.dart';
+import '../profileScreen/profile_screen.dart';
+import '../profileScreen/profile_screen_store.dart';
 import 'home_store.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -27,7 +30,12 @@ class _HomeScreenState extends State<HomeScreen> {
     ]),
     const Text('Search Page'),
     const Text('Profile Page'),
-    const Text('Winter Page'),
+    MultiProvider(
+      providers: [
+        Provider<ProfileScreenStore>(create: (_) => ProfileScreenStore()),
+      ],
+      child: const ProfileScreen(),
+    ),
   ];
 
   @override

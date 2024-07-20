@@ -21,6 +21,10 @@ class AppTheme {
         fontFamily: 'Montserrat',
         fontWeight: FontWeight.w600,
       ),
+      titleSmall: TextStyle(
+        fontFamily: 'Montserrat',
+        fontWeight: FontWeight.w500,
+      ),
       labelLarge: TextStyle(
         fontFamily: 'Montserrat',
         fontWeight: FontWeight.w600,

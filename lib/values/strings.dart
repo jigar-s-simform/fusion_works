@@ -22,7 +22,6 @@ class ApiErrorStrings {
 class AppStrings {
   const AppStrings._();
 
-  static const String calendar = 'Calendar';
   static const String login = 'Login';
   static const String loginUsing =
       'Login using your credentials to access into FusionWorks.';
@@ -41,6 +40,12 @@ class AppStrings {
   static const String dontHaveAccount = 'Don’t have an account? ';
   static const String alreadyMember = 'Already a member? ';
   static const String register = 'Register';
+  static const String calendar = 'Calendar';
+
+  // Profile screen
+  static const String mobileNumber = 'Mobile Number';
+  static const String employeeCode = 'Employee Code';
+  static const String dateOfBirth = 'Date of Birth';
 }
 
 class AssetsString {
@@ -52,4 +57,8 @@ class AssetsString {
   static const String eyeCloseIcon = 'assets/icons/ic_eye_close.svg';
   static const String microsoftIcon = 'assets/icons/ic_microsoft.png';
   static const String googleIcon = 'assets/icons/ic_google.png';
+  static const String calendarIcon = 'assets/icons/ic_calendar.svg';
+  static const String callIcon = 'assets/icons/ic_call.svg';
+  static const String employeeCardIcon = 'assets/icons/ic_employee_card.svg';
+  static const String logoutIcon = 'assets/icons/ic_logout.svg';
 }
