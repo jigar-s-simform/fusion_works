@@ -21,7 +21,6 @@ abstract class _SplashScreenStore extends NetworkStateStore with Store {
 
   @observable
   bool hasInternet = true;
-
   void cancelSubscription() {
     connectivitySubscription.cancel();
   }

@@ -27,6 +27,7 @@ class FlavoredApp extends StatelessWidget {
       flavor: Flavor.prod,
       values: FlavorValues(
         baseUrl: Env.baseUrl,
+        baseUrlModel: Env.baseUrlModel,
       ),
       child: const AppConfig(),
     );

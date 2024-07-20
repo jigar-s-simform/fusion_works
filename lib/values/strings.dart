@@ -3,6 +3,7 @@ class AppRoutes {
 
   static const String splash = '/splash';
   static const String txtAfterSplash = '/AfterSplash';
+  static const String chatScreen = '/chatScreen';
   static const String profile = '/profileScreen';
   static const String login = '/loginScreen';
   static const String register = '/registerScreen';
