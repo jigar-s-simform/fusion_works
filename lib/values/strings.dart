@@ -47,6 +47,11 @@ class AppStrings {
   static const String mobileNumber = 'Mobile Number';
   static const String employeeCode = 'Employee Code';
   static const String dateOfBirth = 'Date of Birth';
+
+  //Skills screen
+  static const String skillsTitle = 'Skills';
+  static const String primarySkills = 'Primary Skills';
+  static const String secondarySkills = 'Secondary Skills';
 }
 
 class AssetsString {
@@ -62,4 +67,5 @@ class AssetsString {
   static const String callIcon = 'assets/icons/ic_call.svg';
   static const String employeeCardIcon = 'assets/icons/ic_employee_card.svg';
   static const String logoutIcon = 'assets/icons/ic_logout.svg';
+
 }
