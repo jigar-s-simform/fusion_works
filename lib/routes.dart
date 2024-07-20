@@ -34,7 +34,7 @@ class Routes {
       case AppRoutes.profile:
         return getRoute(
           widget: const ProfileScreen().withProvider(
-            ProfileScreenStore(Repository.instance),
+            ProfileScreenStore(),
           ),
         );
 
