@@ -59,11 +59,14 @@ android/keystore.properties
 drafts/
 logs/
 
+.fvm
+.fvmrc
 .env
 gen
 generated
 **/*.g.dart
 **/*.patch
+devtools_options.yaml
 ios/Flutter/.last_build_id
 fastlane/report.xml
 **/pubspec.lock

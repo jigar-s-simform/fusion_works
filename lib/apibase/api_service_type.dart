@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:fusion_works/apibase/header_interceptor.dart';
-import 'package:fusion_works/values/constants.dart';
 
 import '../flavors/flavor_values.dart';
 import 'api_service.dart';
@@ -11,7 +10,7 @@ class ApiServiceType {
   static final ApiService chatService = ApiService(
     _getDio(
       options: BaseOptions(
-        baseUrl: Constants.baseUrl,
+        baseUrl: FlavorValues.instance.baseUrl,
       ),
     ),
   );

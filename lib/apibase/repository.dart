@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 
 import '../model/response/api_response.dart';
 import '../model/response/invalid_response_model.dart';
+import '../model/response/profile/profile.dart';
 import '../model/response/user/user.dart';
 import '../values/strings.dart';
 import 'api_service.dart';
@@ -21,6 +22,10 @@ class Repository {
 
   Future<User> getPostFromId(Map<String, dynamic> id) async {
     return _apiCall<User>(request: () => _apiService.login(id));
+  }
+
+  Future<Profile> getProfileFromEmail(String email) async {
+    return _apiCall<Profile>(request: () => _apiService.getProfile(email));
   }
 
   Future<T> _apiCall<T>({
