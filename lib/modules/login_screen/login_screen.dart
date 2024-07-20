@@ -8,7 +8,6 @@ import 'package:fusion_works/values/app_colors.dart';
 import 'package:fusion_works/values/strings.dart';
 
 import '../../utils/common_widgets/fw_outlined_button.dart';
-import '../../values/constants.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -18,6 +17,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -29,7 +30,7 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Form(
-            key: Constants.loginFormKey,
+            key: loginFormKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -75,8 +76,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 FwButton(
                   text: AppStrings.login,
                   setOnClickListener: () {
-                    Constants.loginFormKey.currentState?.save();
-                    Constants.loginFormKey.currentState?.validate();
+                    loginFormKey.currentState?.save();
+                    loginFormKey.currentState?.validate();
                     final isNotEmpty = emailController.text.trim().isNotEmpty &&
                         passwordController.text.trim().isNotEmpty;
                     if (isNotEmpty) {

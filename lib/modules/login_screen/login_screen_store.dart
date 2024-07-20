@@ -22,6 +22,4 @@ abstract class _LoginScreenStore with Store {
     // Todo(shubham): saveToken()
     state = NetworkState.success;
   }
-
-  void dispose() {}
 }

@@ -24,4 +24,6 @@ class AppColors {
   static const Color loginLightText = Color.fromRGBO(78, 80, 89, 1);
   static const Color registerLightText = Color.fromRGBO(78, 80, 89, 1);
   static const Color hintText = Color.fromRGBO(117, 120, 132, 1);
+  static const Color divider = Color.fromRGBO(244, 244, 246, 1);
+  static const Color darkGrey = Color.fromRGBO(78, 80, 89, 1);
 }

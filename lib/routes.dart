@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:fusion_works/utils/extensions.dart';
 
-import 'apibase/repository.dart';
 import 'modules/home_screen/home_screen.dart';
 import 'modules/login_screen/login_screen.dart';
 import 'modules/login_screen/login_screen_store.dart';
-import 'modules/profile_screen/profile_screen.dart';
-import 'modules/profile_screen/profile_screen_store.dart';
+import 'modules/profileScreen/profile_screen.dart';
+import 'modules/profileScreen/profile_screen_store.dart';
 import 'modules/registrationScreen/register_screen.dart';
 import 'modules/registrationScreen/register_screen_store.dart';
 import 'modules/splashScreen/splash_screen.dart';
@@ -50,7 +49,7 @@ class Routes {
       case AppRoutes.register:
         return getRoute(
           widget: const RegisterScreen().withProvider(
-            RegisterScreenStore(Repository.instance),
+            RegisterScreenStore(),
           ),
         );
 

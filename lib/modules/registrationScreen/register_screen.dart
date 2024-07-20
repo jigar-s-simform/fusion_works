@@ -8,7 +8,6 @@ import 'package:fusion_works/values/app_colors.dart';
 import 'package:fusion_works/values/strings.dart';
 
 import '../../utils/common_widgets/fw_outlined_button.dart';
-import '../../values/constants.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -18,6 +17,8 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+  GlobalKey<FormState> registerFormKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -30,7 +31,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Form(
-            key: Constants.registerFormKey,
+            key: registerFormKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -88,10 +89,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 FwButton(
                   text: AppStrings.register,
                   setOnClickListener: () {
-                    Constants.registerFormKey.currentState?.save();
+                    registerFormKey.currentState?.save();
                     final isFieldValid =
-                        Constants.registerFormKey.currentState?.validate() ??
-                            false;
+                        registerFormKey.currentState?.validate() ?? false;
                     final isNotEmpty = passwordController.text.isNotEmpty &&
                         confirmPasswordController.text.isNotEmpty;
                     final isSame = passwordController.text.trim() ==
