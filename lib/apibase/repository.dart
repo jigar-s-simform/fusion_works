@@ -28,6 +28,10 @@ class Repository {
     return _apiCall<Profile>(request: () => _apiService.getProfile(email));
   }
 
+  Future<Profile> getProfileFromEmail(String email) async {
+    return _apiCall<Profile>(request: () => apiService.getProfile(email));
+  }
+
   Future<T> _apiCall<T>({
     required ApiCallback<T> request,
     String noDataMessage = ApiErrorStrings.somethingWrongErrorMsg,
