@@ -1,32 +1,26 @@
 import 'package:dio/dio.dart';
 
-import '../flavors/flavor_values.dart';
 import '../model/response/api_response.dart';
 import '../model/response/invalid_response_model.dart';
 import '../model/response/user/user.dart';
 import '../values/strings.dart';
 import 'api_service.dart';
-import 'header_interceptor.dart';
+import 'api_service_type.dart';
 
 typedef ApiCallback<T> = Future<APIResponse<T>> Function();
 
 class Repository {
-  factory Repository() => instance;
+  Repository._initialize(this._apiService);
 
-  Repository._initialize() {
-    dio = Dio(BaseOptions(baseUrl: FlavorValues.instance.baseUrl));
-    dio.interceptors.add(HeaderInterceptor());
-    apiService = ApiService(dio);
-  }
+  static final Repository chatDb =
+      Repository._initialize(ApiServiceType.chatService);
+  static final Repository instance =
+      Repository._initialize(ApiServiceType.apiService);
 
-  static final Repository instance = Repository._initialize();
-
-  late Dio dio;
-
-  late ApiService apiService;
+  final ApiService _apiService;
 
   Future<User> getPostFromId(Map<String, dynamic> id) async {
-    return _apiCall<User>(request: () => apiService.login(id));
+    return _apiCall<User>(request: () => _apiService.login(id));
   }
 
   Future<T> _apiCall<T>({

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fusion_works/env/env.dart';
 
 import 'app_config.dart';
 import 'flavors/flavor.dart';
@@ -7,7 +8,6 @@ import 'flavors/flavor_values.dart';
 import 'services/shared_prefs.dart';
 import 'utils/helpers/helpers.dart';
 import 'utils/network_utils.dart';
-import 'values/constants.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,7 +26,7 @@ class FlavoredApp extends StatelessWidget {
     return FlavorConfig(
       flavor: Flavor.dev,
       values: FlavorValues(
-        baseUrl: Constants.baseUrl,
+        baseUrl: Env.baseUrl,
       ),
       child: const AppConfig(),
     );
