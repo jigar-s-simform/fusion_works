@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:fusion_works/model/response/profile/profile.dart';
 import 'package:retrofit/retrofit.dart';
 
 import '../model/model.dart';
@@ -13,5 +14,11 @@ abstract class ApiService {
   @POST('/login')
   Future<APIResponse<User>> login(
     @Body() Map<String, dynamic> loginRequestBean,
+  );
+
+  /// Profile
+  @GET('/profile')
+  Future<APIResponse<Profile>> getProfile(
+    @Query('email') String email,
   );
 }
