@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_neat_and_clean_calendar/neat_and_clean_calendar_event.dart';
+import 'package:fusion_works/values/app_colors.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../flavors/flavor.dart';
 import '../flavors/flavor_config.dart';
+import '../model/events/event.dart';
 
 /// provides extension to get a dependency from provider
 extension ContextExtension on BuildContext {
@@ -107,4 +110,47 @@ extension NullableStringExtension on String? {
 
   ///checks if string is not null and not empty.
   bool get isNotNullAndNotEmpty => this != null && (this?.isNotEmpty ?? false);
+}
+
+Provider<T> createProviderFor<T>(T provide, {Dispose<T>? dispose}) =>
+    Provider<T>(create: (context) => provide, dispose: dispose);
+
+extension EventConversion on Event {
+  NeatCleanCalendarEvent toNeatCleanCalendarEvent() {
+    return NeatCleanCalendarEvent(
+      title,
+      description: description,
+      startTime: startTime,
+      endTime: endTime,
+      color: emode.isOnline ? AppColors.lightGreen : AppColors.lightOrange,
+    );
+  }
+}
+
+extension NeatCleanCalendarEventConversion on NeatCleanCalendarEvent {
+  Event toEvent({
+    required int id,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    DateTime? deletedAt,
+    required DateTime startDate,
+    required DateTime endDate,
+    required EventMode emode,
+    required EventType etype,
+  }) {
+    return Event(
+      id: id,
+      createdAt: createdAt,
+      updatedAt: updatedAt,
+      deletedAt: deletedAt,
+      title: summary,
+      description: description,
+      startDate: startDate,
+      endDate: endDate,
+      startTime: startTime,
+      endTime: endTime,
+      emode: emode,
+      etype: etype,
+    );
+  }
 }

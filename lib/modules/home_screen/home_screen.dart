@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:fusion_works/utils/extensions.dart';
 
 import '../../gen/assets.gen.dart';
 import '../../values/app_colors.dart';
 import '../../widgets/bottom_tab/bottom_tab.dart';
+import '../event_screen/event_screen.dart';
+import '../event_screen/event_store.dart';
 import 'home_store.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -18,11 +21,13 @@ class _HomeScreenState extends State<HomeScreen> {
   final HomeStore _homeStore = HomeStore();
 
   // List of widgets representing different pages
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text('Home Page'),
-    Text('Search Page'),
-    Text('Profile Page'),
-    Text('Winter Page'),
+  static final List<Widget> _widgetOptions = <Widget>[
+    const EventsScreen().withProviders([
+      createProviderFor<EventStore>(EventStore()..getAllEvents()),
+    ]),
+    const Text('Search Page'),
+    const Text('Profile Page'),
+    const Text('Winter Page'),
   ];
 
   @override

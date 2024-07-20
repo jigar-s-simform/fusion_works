@@ -13,3 +13,14 @@ extension NetworkStateExtension on NetworkState {
 enum SharedPrefsKeys { isLoggedIn }
 
 enum SecureStorageKeys { kAccessToken }
+
+enum EventType {
+  holiday,
+  floater,
+  event,
+}
+
+enum EventMode {
+  online,
+  offline,
+}

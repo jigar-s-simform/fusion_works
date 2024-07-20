@@ -6,6 +6,22 @@ class AppTheme {
 
   static final ThemeData lightTheme = ThemeData(
     colorSchemeSeed: AppColors.colorPrimary,
+    textTheme: const TextTheme(
+      titleLarge: TextStyle(
+        fontSize: 22,
+        fontWeight: FontWeight.w600,
+      ),
+      bodySmall: TextStyle(
+        fontSize: 12,
+        fontWeight: FontWeight.w500,
+        color: AppColors.grey,
+      ),
+      bodyMedium: TextStyle(
+        fontSize: 14,
+        fontWeight: FontWeight.w500,
+        color: AppColors.black,
+      ),
+    ),
   );
 
   static final ThemeData darkTheme = ThemeData.dark();
