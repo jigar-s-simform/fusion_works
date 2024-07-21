@@ -84,7 +84,7 @@ class _FwTextFormFieldState extends State<FwTextFormField> {
             ),
           ),
           inputFormatters: [
-            LengthLimitingTextInputFormatter(16),
+            LengthLimitingTextInputFormatter(64),
           ],
           validator: widget.validator,
         ),

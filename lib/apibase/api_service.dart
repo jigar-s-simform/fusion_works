@@ -10,6 +10,8 @@ import '../model/model.dart';
 import '../model/request/add_skill/add_skill_dm.dart';
 import '../model/response/llm_response.dart';
 import '../model/response/login/token.dart';
+import '../model/response/register/register_request.dart';
+import '../model/response/register/register_response.dart';
 
 part 'api_service.g.dart';
 
@@ -25,10 +27,9 @@ abstract class ApiService {
   );
 
   /// Register
-  @POST('/register')
-  Future<APIResponse<Token>> register(
-    @Query('email') String email,
-    @Query('password') String password,
+  @POST('auth/register')
+  Future<APIResponse<RegisterResponse>> register(
+    @Body() RegisterRequest request,
   );
 
   /// Profile

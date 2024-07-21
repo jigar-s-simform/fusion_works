@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fusion_works/modules/profileScreen/profile_screen_store.dart';
 import 'package:fusion_works/utils/extensions.dart';
+import 'package:fusion_works/utils/helpers/dummy_data.dart';
 import 'package:fusion_works/values/app_colors.dart';
 import 'package:fusion_works/values/strings.dart';
 import 'package:provider/provider.dart';
@@ -21,7 +22,7 @@ class ProfileScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text('Profile'),
+        title: const Text('Profile'),
         centerTitle: false,
       ),
       body: Padding(
@@ -42,11 +43,11 @@ class ProfileScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "John Doe",
+                        DummyData.getRandomFullName(),
                         style: theme.textTheme.titleMedium,
                       ),
                       Text(
-                        "UX Designer",
+                        DummyData.getRandomDesignation(),
                         style: theme.textTheme.titleSmall
                             ?.copyWith(color: AppColors.darkGrey),
                       ),
@@ -65,21 +66,23 @@ class ProfileScreen extends StatelessWidget {
               title: AppStrings.email,
               subtitle: 'johndoe@simformsolutions.com',
             ),
-            const ProfileListViewTile(
+            ProfileListViewTile(
               svgImagePath: AssetsString.callIcon,
               title: AppStrings.mobileNumber,
-              subtitle: '+91 00000 00000',
+              subtitle: DummyData.getRandomMobileNumber(),
             ),
-            const ProfileListViewTile(
+            ProfileListViewTile(
               svgImagePath: AssetsString.employeeCardIcon,
-              title: AppStrings.employeeCode,
+              title: DummyData.getRandomEmployeeCode().toString(),
               subtitle: '#2564',
             ),
-            const ProfileListViewTile(
+            ProfileListViewTile(
               svgImagePath: AssetsString.calendarIcon,
               title: AppStrings.dateOfBirth,
-              subtitle: '20/10/1997',
+              subtitle: DummyData.getDobFromIso(
+                  DummyData.generateRandomDateOfBirth()),
             ),
+            const SizedBox(height: 16),
             const Align(
               alignment: Alignment.centerLeft,
               child: Text(
