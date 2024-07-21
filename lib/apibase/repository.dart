@@ -52,7 +52,7 @@ class Repository {
   Future<EventResponse?> getEvents() async {
     return _apiCall<EventResponse>(
       request: () => _apiService.getEventList(
-        {"startDate": "2024-07-9", "endDate": "2024-07-21"},
+        {"startDate": "2024-01-01", "endDate": "2025-12-31"},
       ),
     );
   }
