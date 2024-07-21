@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fusion_works/modules/chat/chat_store.dart';
 import 'package:fusion_works/modules/feed_screen/add_status_screen.dart';
+import 'package:fusion_works/modules/profileScreen/project_list_screen.dart';
 import 'package:fusion_works/modules/skills_screen/add_skills_screen.dart';
 import 'package:fusion_works/modules/skills_screen/skills_store.dart';
 import 'package:fusion_works/utils/extensions.dart';
@@ -68,6 +69,12 @@ class Routes {
       case AppRoutes.addStatus:
         return getRoute(
           widget: const AddStatusScreen(),
+        );
+      case AppRoutes.projectList:
+        return getRoute(
+          widget: const ProjectListScreen().withProvider(
+            ProfileScreenStore(),
+          ),
         );
 
       /// An invalid route. User shouldn't see this, it's for debugging purpose

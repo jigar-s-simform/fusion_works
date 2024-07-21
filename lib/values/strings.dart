@@ -10,6 +10,7 @@ class AppRoutes {
   static const String register = '/registerScreen';
   static const String events = '/events';
   static const String addStatus = '/addStatus';
+  static const String projectList = '/projectList';
 }
 
 class ApiErrorStrings {
@@ -89,4 +90,6 @@ class AssetsString {
   static const String callIcon = 'assets/icons/ic_call.svg';
   static const String employeeCardIcon = 'assets/icons/ic_employee_card.svg';
   static const String logoutIcon = 'assets/icons/ic_logout.svg';
+  static const String briefcase = 'assets/icons/briefcase.svg';
+  static const String clock = 'assets/icons/clock.svg';
 }

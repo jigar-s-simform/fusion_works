@@ -41,6 +41,15 @@ class CalenderView extends StatelessObserverWidget {
             ),
             Expanded(
               child: Calendar(
+                weekDays: const [
+                  'Mon',
+                  'Tue',
+                  'Wed',
+                  'Thu',
+                  'Fri',
+                  'Sat',
+                  'Sun'
+                ],
                 hideTodayIcon: true,
                 startOnMonday: true,
                 eventsList: eventList,
