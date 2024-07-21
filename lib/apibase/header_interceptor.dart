@@ -2,8 +2,6 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 
-import '../services/secure_storage.dart';
-import '../utils/enumeration.dart';
 import '../utils/network_utils.dart';
 import 'api_logger.dart';
 
@@ -32,13 +30,6 @@ class HeaderInterceptor extends Interceptor {
           options.headers.putIfAbsent('Cookie', () => 'jwt=$token');
         }
       }
-      _logger.printSuccessLog(
-        apiMethod: options.method,
-        responseBody: options.data.toString(),
-        parameters: options.queryParameters,
-        url: '${options.baseUrl}${options.path}',
-        token: options.headers['Authentication'].toString(),
-      );
     } else {
       // TODO(username): Show no internet dialog or toast here.
     }
@@ -53,15 +44,6 @@ class HeaderInterceptor extends Interceptor {
     if (response.statusCode == 401) {
       // TODO(username): Handle token expired
     }
-    _logger.printSuccessLog(
-      apiMethod: response.requestOptions.method,
-      responseBody: response.data.toString(),
-      parameters: response.requestOptions.data as Object,
-      url: '${response.realUri.scheme}://${response.realUri.authority}'
-          '${response.realUri.path}',
-      token: response.headers.value('Authentication') ?? '',
-      isRequest: false,
-    );
     handler.resolve(response);
   }
 
@@ -70,22 +52,11 @@ class HeaderInterceptor extends Interceptor {
     DioException err,
     ErrorInterceptorHandler handler,
   ) {
-    if (err.response != null) {
-      _logger.printErrorLog(
-        responseBody: err.response!.data.toString(),
-        parameters: err.response!.requestOptions.data as Object,
-        url:
-            '${err.response!.realUri.scheme}://${err.response!.realUri.authority}'
-            '${err.response!.realUri.path}',
-        token: err.response!.headers.value('Authentication') ?? '',
-        errorString: err.response!.statusMessage ?? 'No message found',
-        statusCode: err.response!.statusCode ?? -1,
-      );
-    }
+    if (err.response != null) {}
 
     handler.reject(err);
   }
 
-  Future<String?> checkToken() async =>
-      SecureStorage.getValue(key: SecureStorageKeys.kAccessToken);
+  Future<String?> checkToken() async => Future.value(
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjMsImVtYWlsIjoiamFpZ2FuZXNoQGdtYWlsLmNvbSIsImlhdCI6MTcyMTU1Mzg2MywiZXhwIjoxNzI0MTQ1ODYzfQ.n8XKcU51Wnv1hZiZCHFtqtMCzcZxNAX6NiblRPm-Org');
 }

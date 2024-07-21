@@ -17,6 +17,7 @@ class AppColors {
   static const Color darkOrange = Color(0xFFF7894C);
   static const Color mediumGrey = Color(0xFF6E7281);
   static const Color black = Color(0xFF000000);
+  static const Color buttonSelectedBackground = Color(0xFFE7F0FD);
   static const Color transparent = Color(0x00000000);
 
   static const Color sectionListText = mediumGrey;
@@ -28,6 +29,8 @@ class AppColors {
   static const Color divider = Color(0xFFF4F4F6);
   static const Color botBackground = Color(0xFFE7F0Fd);
   static const Color hintTextColor = Color(0xFF757884);
+  static const Color inputBorder = Color(0xFFD5D5DD);
+  static const Color red = Color(0xFFC70000);
 
   // Widget colors
   static const Color buttonColor = Color.fromRGBO(6, 75, 172, 1);

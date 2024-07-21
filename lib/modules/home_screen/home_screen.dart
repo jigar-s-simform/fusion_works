@@ -7,6 +7,7 @@ import 'package:fusion_works/utils/extensions.dart';
 
 import '../../gen/assets.gen.dart';
 import '../../values/app_colors.dart';
+import '../../values/strings.dart';
 import '../../widgets/bottom_tab/bottom_tab.dart';
 import '../event_screen/event_screen.dart';
 import '../event_screen/event_store.dart';
@@ -44,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Todo: Add on press function for chat fab button
+          Navigator.pushNamed(context, AppRoutes.chatScreen);
         },
         backgroundColor: AppColors.colorPrimary,
         shape: RoundedRectangleBorder(

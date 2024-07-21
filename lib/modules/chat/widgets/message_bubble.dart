@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:fusion_works/apibase/repository.dart';
 import 'package:provider/provider.dart';
 
+import '../../../apibase/repository.dart';
 import '../../../gen/assets.gen.dart';
 import '../../../values/app_colors.dart';
 import '../../../values/constants.dart';
@@ -32,17 +32,19 @@ class MessageBarState extends State<MessageBar> {
       color: AppColors.white,
       child: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(8),
+          padding: const EdgeInsets.all(16),
           child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+            alignment: Alignment.center,
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             decoration: BoxDecoration(
               color: AppColors.white,
-              border: Border.all(color: AppColors.hintTextColor),
+              border: Border.all(color: AppColors.inputBorder),
               borderRadius: const BorderRadius.all(
-                Radius.circular(10),
+                Radius.circular(12),
               ),
             ),
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Expanded(
                   child: Scrollbar(
@@ -53,24 +55,34 @@ class MessageBarState extends State<MessageBar> {
                       maxLines: 5,
                       controller: _textController,
                       cursorColor: AppColors.black,
+                      cursorHeight: 20,
                       style: const TextStyle(
                         color: AppColors.black,
                       ),
                       decoration: const InputDecoration(
-                        hintText: Constants.startConversationNow,
+                        hintText: Constants.messageBubblePrompt,
                         border: InputBorder.none,
                         focusedBorder: InputBorder.none,
-                        contentPadding: EdgeInsets.all(8),
                         hintStyle: TextStyle(
-                          color: AppColors.hintTextColor,
+                          color: AppColors.mediumGrey,
+                          fontWeight: FontWeight.w400,
+                          fontSize: 14,
                         ),
                       ),
                     ),
                   ),
                 ),
-                GestureDetector(
-                  onTap: _submitMessage,
-                  child: Image.asset(Assets.images.sendButton.path),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 6),
+                  child: GestureDetector(
+                    onTap: _submitMessage,
+                    child: Image.asset(
+                      fit: BoxFit.fitHeight,
+                      Assets.images.sendButton.path,
+                      width: 36,
+                      height: 36,
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -94,12 +106,17 @@ class MessageBarState extends State<MessageBar> {
 
   void _submitMessage() async {
     final text = _textController.text;
-    context.read<ChatStore>().addMessage(text, false);
-    context.read<ChatStore>().receiveMessageFromAssistant();
-    _textController.clear();
-    final response = await Repository.chatDb.getModelResponse(text);
-    context
-        .read<ChatStore>()
-        .editLastMessageWithContent(response.data?.response ?? '');
+    if (text.trim().isNotEmpty) {
+      context.read<ChatStore>().addMessage(text, false);
+      context.read<ChatStore>().receiveMessageFromAssistant();
+      _textController.clear();
+
+      final response = context.read<ChatStore>().isDatabaseSelected
+          ? (await Repository.chatDb.getModelResponse(text)).data?.response
+          : await Repository.instance.getDocsModelResponse(text);
+      context
+          .read<ChatStore>()
+          .editLastMessageWithContent(response ?? 'Something went wrong');
+    }
   }
 }
