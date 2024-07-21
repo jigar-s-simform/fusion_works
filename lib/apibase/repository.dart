@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:fusion_works/model/response/login/token.dart';
+import 'package:fusion_works/model/response/skill/skill_dm.dart';
 
 import '../model/response/api_response.dart';
 import '../model/response/invalid_response_model.dart';
@@ -21,6 +22,7 @@ class Repository {
       Repository._initialize(ApiServiceType.chatService);
   static final Repository instance =
       Repository._initialize(ApiServiceType.apiService);
+
   final ApiService _apiService;
 
   Future<User> getProfileFromEmail(String email) async {
@@ -41,6 +43,10 @@ class Repository {
   ) async {
     return _apiCallModel<LLMResponse<LLMResponseData<String>>>(
         request: () => _apiService.getModelResponse(prompt));
+  }
+
+  Future<List<SkillDm>> getUserSkills() async {
+    return _apiCall<List<SkillDm>>(request: _apiService.getSkill);
   }
 
   Future<T> _apiCall<T>({

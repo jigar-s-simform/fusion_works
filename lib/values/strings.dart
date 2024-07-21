@@ -4,6 +4,7 @@ class AppRoutes {
   static const String splash = '/splash';
   static const String txtAfterSplash = '/AfterSplash';
   static const String chatScreen = '/chatScreen';
+  static const String addSkills = '/AddSkills';
   static const String profile = '/profileScreen';
   static const String login = '/loginScreen';
   static const String register = '/registerScreen';
@@ -52,6 +53,7 @@ class AppStrings {
   static const String skillsTitle = 'Skills';
   static const String primarySkills = 'Primary Skills';
   static const String secondarySkills = 'Secondary Skills';
+  static const String addSkill = 'Add Skill';
 }
 
 class AssetsString {

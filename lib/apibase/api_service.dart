@@ -1,9 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:fusion_works/model/response/llm_response_data.dart';
 import 'package:fusion_works/model/response/profile/profile.dart';
+import 'package:fusion_works/model/response/skill/skill_dm.dart';
 import 'package:retrofit/retrofit.dart';
 
 import '../model/model.dart';
+import '../model/request/add_skill/add_skill_dm.dart';
 import '../model/response/llm_response.dart';
 import '../model/response/login/token.dart';
 
@@ -37,5 +39,15 @@ abstract class ApiService {
   @FormUrlEncoded()
   Future<LLMResponse<LLMResponseData<String>>> getModelResponse(
     @Field('prompt') String prompt,
+  );
+
+  /// Skill
+  @GET('/skill')
+  Future<APIResponse<List<SkillDm>>> getSkill();
+
+  /// Add Skill
+  @POST('/skill')
+  Future<APIResponse<User>> addSkill(
+    @Body() AddSkillDm addSkillRequest,
   );
 }

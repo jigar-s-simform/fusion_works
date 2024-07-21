@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:fusion_works/modules/skills_screen/primary_skills/primary_skills.dart';
-import 'package:fusion_works/modules/skills_screen/secondary_skills/secondary_skills.dart';
 
+import '../../app.dart';
 import '../../gen/assets.gen.dart';
 import '../../values/app_theme.dart';
 import '../../values/strings.dart';
+import 'primary_skills/primary_skills.dart';
+import 'secondary_skills/secondary_skills.dart';
 import 'skills_store.dart';
 import 'skills_tab_header.dart';
 
@@ -33,11 +34,15 @@ class SkillsScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(12),
-                child: Assets.icons.add.image(
-                  width: 24,
-                  height: 24,
+              InkWell(
+                onTap: () =>
+                    navigatorKey.currentState?.pushNamed(AppRoutes.addSkills),
+                child: Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: Assets.icons.add.svg(
+                    width: 24,
+                    height: 24,
+                  ),
                 ),
               ),
               const SizedBox(width: 12),

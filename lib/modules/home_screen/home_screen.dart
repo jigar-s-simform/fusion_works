@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:fusion_works/modules/skills_screen/skills_store.dart';
 import 'package:fusion_works/utils/extensions.dart';
 import 'package:provider/provider.dart';
 
@@ -29,7 +30,13 @@ class _HomeScreenState extends State<HomeScreen> {
     const EventsScreen().withProviders([
       createProviderFor<EventStore>(EventStore()..getAllEvents()),
     ]),
-    SkillsScreen(),
+    SkillsScreen().withProviders(
+      [
+        createProviderFor<SkillsStore>(
+          SkillsStore()..fetchUserSkills(),
+        ),
+      ],
+    ),
     const Text('Profile Page'),
     MultiProvider(
       providers: [
@@ -44,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       body: SafeArea(
         child: Observer(
-          builder: (_) => _widgetOptions.elementAt(_homeStore.selectedIndex),
+          builder: (_) => _widgetOptions[_homeStore.selectedIndex],
         ),
       ),
       floatingActionButton: FloatingActionButton(

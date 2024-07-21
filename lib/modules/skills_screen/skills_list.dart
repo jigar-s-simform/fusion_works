@@ -23,7 +23,7 @@ class SkillList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(vertical: 16),
       child: ListView.separated(
         itemCount: skills.length,
         separatorBuilder: (context, index) => const Divider(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fusion_works/modules/chat/chat_store.dart';
+import 'package:fusion_works/modules/skills_screen/add_skills_screen.dart';
 import 'package:fusion_works/utils/extensions.dart';
 
 import 'modules/chat/chat_screen.dart';
@@ -31,6 +32,10 @@ class Routes {
       case AppRoutes.splash:
         return getRoute(
           widget: const SplashScreen(),
+        );
+      case AppRoutes.addSkills:
+        return getRoute(
+          widget: AddSkillsScreen(),
         );
       case AppRoutes.txtAfterSplash:
         return getRoute(
