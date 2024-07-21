@@ -46,11 +46,11 @@ abstract class ApiService {
 
   /// Skill
   @GET('/skill')
-  Future<APIResponse<List<SkillDm>>> getSkill();
+  Future<APIResponse<ListSkillDm>> getSkill();
 
   /// Add Skill
   @POST('/skill')
-  Future<APIResponse<User>> addSkill(
+  Future<APIResponse<SkillDm>> addSkill(
     @Body() AddSkillDm addSkillRequest,
   );
 

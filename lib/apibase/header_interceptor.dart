@@ -52,8 +52,6 @@ class HeaderInterceptor extends Interceptor {
     DioException err,
     ErrorInterceptorHandler handler,
   ) {
-    if (err.response != null) {}
-
     handler.reject(err);
   }
 

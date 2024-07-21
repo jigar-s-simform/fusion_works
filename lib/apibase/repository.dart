@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:fusion_works/model/events/event_response.dart';
+import 'package:fusion_works/model/request/add_skill/add_skill_dm.dart';
 import 'package:fusion_works/model/request/dsu_list_req_dm.dart';
 import 'package:fusion_works/model/response/feed_status/dsu_res_dm.dart';
 import 'package:fusion_works/model/response/login/token.dart';
@@ -52,8 +53,13 @@ class Repository {
         request: () => _apiService.getModelResponse(prompt));
   }
 
-  Future<List<SkillDm>> getUserSkills() async {
-    return _apiCall<List<SkillDm>>(request: _apiService.getSkill);
+  Future<ListSkillDm> getUserSkills() async {
+    return _apiCall<ListSkillDm>(request: _apiService.getSkill);
+  }
+
+  Future<SkillDm> addSkill(AddSkillDm addSkillRequest) async {
+    return _apiCall<SkillDm>(
+        request: () => _apiService.addSkill(addSkillRequest));
   }
 
   Future<DsuResDm> getDsuList(DsuListReqDm dsuListReqDm) async {
@@ -91,7 +97,6 @@ class Repository {
     } on String {
       rethrow;
     } on DioException catch (error) {
-      print("Error aaya $error");
       if (error.response == null) {
         throw Exception(ApiErrorStrings.noInternetMsg);
       }

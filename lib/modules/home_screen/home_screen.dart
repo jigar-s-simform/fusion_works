@@ -30,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
   // List of widgets representing different pages
   static final List<Widget> _widgetOptions = <Widget>[
     const EventsScreen().withProvider(EventStore()..getAllEvents()),
-    const SkillsScreen().withProvider(SkillsStore()..fetchUserSkills()),
+    SkillsScreen().withProvider(SkillsStore()..fetchUserSkills()),
     const FeedScreen().withProvider(FeedScreenStore()..getDsuList()),
     const ProfileScreen().withProvider(ProfileScreenStore()),
   ];

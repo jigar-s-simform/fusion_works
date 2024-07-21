@@ -1,7 +1,9 @@
 import 'package:fusion_works/model/response/skill/skill_dm.dart';
+import 'package:fusion_works/values/skills_dummy_data.dart';
 import 'package:mobx/mobx.dart';
 
 import '../../apibase/repository.dart';
+import '../../model/request/add_skill/add_skill_dm.dart';
 import '../../utils/enumeration.dart';
 
 part 'skills_store.g.dart';
@@ -61,7 +63,13 @@ abstract class _SkillsStore with Store {
   NetworkState skillState = NetworkState.idle;
 
   @observable
-  ObservableList<SkillDm>? skillsResponse;
+  List<SkillDm>? skillsResponse;
+
+  @observable
+  List<SkillDm>? primarySkills;
+
+  @observable
+  List<SkillDm>? secondarySkills;
 
   @observable
   String? errorMessage;
@@ -73,14 +81,28 @@ abstract class _SkillsStore with Store {
       skillState = NetworkState.loading;
 
       final result = await Repository.instance.getUserSkills();
-      skillsResponse = result.asObservable();
-
-      print('skill response $skillsResponse');
-
+      skillsResponse = result.skills;
       skillState = NetworkState.success;
     } catch (e) {
       skillState = NetworkState.error;
       errorMessage = e.toString();
+      skillsResponse = skillsList;
+    }
+  }
+
+  @observable
+  NetworkState addSkillState = NetworkState.idle;
+
+  @action
+  Future<void> addSkill(AddSkillDm addSkillRequest) async {
+    try {
+      addSkillState = NetworkState.loading;
+      final result = await Repository.instance.addSkill(addSkillRequest);
+      addSkillState = NetworkState.success;
+
+      await fetchUserSkills();
+    } catch (e) {
+      addSkillState = NetworkState.error;
     }
   }
 }
