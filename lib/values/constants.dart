@@ -10,4 +10,6 @@ class Constants {
   static const eventCardHeight = 52;
   static const double timeLineCardHeight = 72;
   static const String firstMessage = 'How can I help you today?';
+
+  static const skillProficiency = ['Beginner', 'Intermediate', 'Advanced'];
 }

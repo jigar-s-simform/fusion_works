@@ -4,6 +4,7 @@ class AppRoutes {
   static const String splash = '/splash';
   static const String txtAfterSplash = '/AfterSplash';
   static const String chatScreen = '/chatScreen';
+  static const String addSkills = '/AddSkills';
   static const String profile = '/profileScreen';
   static const String login = '/loginScreen';
   static const String register = '/registerScreen';
@@ -47,6 +48,18 @@ class AppStrings {
   static const String mobileNumber = 'Mobile Number';
   static const String employeeCode = 'Employee Code';
   static const String dateOfBirth = 'Date of Birth';
+
+  //Skills screen
+  static const String skillsTitle = 'Skills';
+  static const String primarySkills = 'Primary Skills';
+  static const String secondarySkills = 'Secondary Skills';
+  static const String addSkill = 'Add Skill';
+  static const String category = 'Category';
+  static const String chooseCategory = 'Choose Category';
+  static const String skill = 'Skill';
+  static const String chooseSkill = 'Choose Skill';
+  static const String proficiency = 'Proficiency';
+  static const String chooseProficiency = 'Choose Proficiency';
 }
 
 class AssetsString {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:fusion_works/modules/skills_screen/skills_store.dart';
 import 'package:fusion_works/utils/extensions.dart';
 import 'package:provider/provider.dart';
 
@@ -10,6 +11,7 @@ import '../event_screen/event_screen.dart';
 import '../event_screen/event_store.dart';
 import '../profileScreen/profile_screen.dart';
 import '../profileScreen/profile_screen_store.dart';
+import '../skills_screen/skills_screen.dart';
 import 'home_store.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -28,7 +30,13 @@ class _HomeScreenState extends State<HomeScreen> {
     const EventsScreen().withProviders([
       createProviderFor<EventStore>(EventStore()..getAllEvents()),
     ]),
-    const Text('Search Page'),
+    SkillsScreen().withProviders(
+      [
+        createProviderFor<SkillsStore>(
+          SkillsStore()..fetchUserSkills(),
+        ),
+      ],
+    ),
     const Text('Profile Page'),
     MultiProvider(
       providers: [
@@ -43,17 +51,14 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       body: SafeArea(
         child: Observer(
-          builder: (_) => Center(
-            // Display the selected page based on index
-            child: _widgetOptions.elementAt(_homeStore.selectedIndex),
-          ),
+          builder: (_) => _widgetOptions[_homeStore.selectedIndex],
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           // Todo: Add on press function for chat fab button
         },
-        backgroundColor: AppColors.blue,
+        backgroundColor: AppColors.colorPrimary,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30),
         ),

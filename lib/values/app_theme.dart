@@ -4,16 +4,17 @@ import 'package:fusion_works/values/app_colors.dart';
 class AppTheme {
   const AppTheme._();
 
+  static const String monsterrat = 'Monsterrat';
+
   static final ThemeData lightTheme = ThemeData(
     colorSchemeSeed: AppColors.colorPrimary,
-    fontFamily: "Fonts/Montserrat.ttf",
+    fontFamily: 'Fonts/Montserrat.ttf',
     textTheme: const TextTheme(
       bodyMedium: TextStyle(
         fontWeight: FontWeight.w400,
-        color: AppColors.hintText,
         fontFamily: 'Montserrat',
       ),
-      bodySmall: const TextStyle(
+      bodySmall: TextStyle(
         fontWeight: FontWeight.w500,
         fontFamily: 'Montserrat',
       ),

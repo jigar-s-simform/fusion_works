@@ -26,7 +26,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> navigationPage() async =>
-      context.pushReplacementNamed<void, void>(AppRoutes.chatScreen);
+      context.pushReplacementNamed<void, void>(AppRoutes.txtAfterSplash);
 
   @override
   Widget build(BuildContext context) {
