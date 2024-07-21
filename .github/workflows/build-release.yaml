@@ -1,0 +1,44 @@
+name: build-release
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Name of the branch to release build from'
+        required: true
+        default: 'main'
+      flavor:
+        description: 'Name of the flavor to generate build of. Possible inputs: dev, uat, prod.'
+        required: true
+        default: 'dev'
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.CI_PAT }}
+    steps:
+      - name: Checkout input branch from github
+        uses: actions/checkout@v4.1.1
+        with:
+          ref: ${{ github.event.inputs.branch }}
+      - name: Install Ruby
+        run: sudo apt install ruby-full -y
+      - run: sudo chmod -R a+w /var/lib/gems/
+      - run: gem install bundler
+      - name: Install Gem dependencies
+        run: bundle install
+      - name: Bump App Version
+        run: bundle exec fastlane bump_version flavor:"${{ github.event.inputs.flavor }}"
+      - name: Trigger iOS build
+        run: |
+          echo '{"branch":"${{ github.event.inputs.branch }}", "flavor":"${{ github.event.inputs.flavor }}"}' | gh workflow run ios-release.yaml --json
+      - name: Trigger android build
+        run: |
+          echo '{"branch":"${{ github.event.inputs.branch }}", "flavor":"${{ github.event.inputs.flavor }}"}' | gh workflow run android-release.yaml --json
