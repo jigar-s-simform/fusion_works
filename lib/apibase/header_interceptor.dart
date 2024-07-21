@@ -3,14 +3,18 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 
 import '../services/secure_storage.dart';
-import '../utils/network_utils.dart';
 import '../utils/enumeration.dart';
+import '../utils/network_utils.dart';
 import 'api_logger.dart';
 
 class HeaderInterceptor extends Interceptor {
-  HeaderInterceptor({this.showLogs = true});
+  HeaderInterceptor({
+    this.showLogs = true,
+    this.shouldAuthenticate = true,
+  });
 
   final bool showLogs;
+  final bool shouldAuthenticate;
 
   final APILogger _logger = APILogger();
 
@@ -21,9 +25,11 @@ class HeaderInterceptor extends Interceptor {
   ) async {
     final internet = NetworkUtils.instance.hasInternet;
     if (internet) {
-      final token = await checkToken();
-      if (token?.isNotEmpty ?? false) {
-        options.headers.putIfAbsent('Authorization', () => token);
+      if (shouldAuthenticate) {
+        final token = await checkToken();
+        if (token?.isNotEmpty ?? false) {
+          options.headers.putIfAbsent('Authorization', () => token);
+        }
       }
       _logger.printSuccessLog(
         apiMethod: options.method,

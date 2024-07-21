@@ -3,12 +3,16 @@ import 'package:fusion_works/model/response/login/token.dart';
 
 import '../model/response/api_response.dart';
 import '../model/response/invalid_response_model.dart';
+import '../model/response/llm_response.dart';
+import '../model/response/llm_response_data.dart';
+import '../model/response/profile/profile.dart';
 import '../model/response/user/user.dart';
 import '../values/strings.dart';
 import 'api_service.dart';
 import 'api_service_type.dart';
 
 typedef ApiCallback<T> = Future<APIResponse<T>> Function();
+typedef ModelApiCallback<T> = Future<T> Function();
 
 class Repository {
   Repository._initialize(this._apiService);
@@ -30,6 +34,13 @@ class Repository {
   Future<Token> register(String email, String password) async {
     return _apiCall<Token>(
         request: () => _apiService.register(email, password));
+  }
+
+  Future<LLMResponse<LLMResponseData<String>>> getModelResponse(
+    String prompt,
+  ) async {
+    return _apiCallModel<LLMResponse<LLMResponseData<String>>>(
+        request: () => _apiService.getModelResponse(prompt));
   }
 
   Future<T> _apiCall<T>({

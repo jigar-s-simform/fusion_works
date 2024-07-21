@@ -18,6 +18,8 @@ class AppColors {
   static const Color lightGrey = Color(0xFFE3E3E8);
   static const Color mediumGrey = Color(0xFF6E7281);
   static const Color black = Color(0xFF000000);
+  static const Color botBackground = Color(0xFFE7F0Fd);
+  static const Color hintTextColor = Color(0xFF757884);
 
   // Widget colors
   static const Color buttonColor = Color.fromRGBO(6, 75, 172, 1);

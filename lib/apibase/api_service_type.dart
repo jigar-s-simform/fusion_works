@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:fusion_works/apibase/header_interceptor.dart';
+
 import '../flavors/flavor_values.dart';
 import 'api_service.dart';
 
@@ -9,8 +10,9 @@ class ApiServiceType {
   static final ApiService chatService = ApiService(
     _getDio(
       options: BaseOptions(
-        baseUrl: FlavorValues.instance.baseUrl,
+        baseUrl: FlavorValues.instance.baseUrlModel,
       ),
+      shouldAuthenticate: false,
     ),
   );
 
@@ -23,11 +25,12 @@ class ApiServiceType {
   static Dio _getDio({
     required BaseOptions options,
     List<Interceptor>? interceptors,
+    bool shouldAuthenticate = true,
   }) {
     final dio = Dio(options);
 
     dio.interceptors.addAll([
-      HeaderInterceptor(),
+      HeaderInterceptor(shouldAuthenticate: shouldAuthenticate),
       ...?interceptors,
     ]);
     return dio;

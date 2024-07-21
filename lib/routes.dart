@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:fusion_works/modules/chat/chat_store.dart';
 import 'package:fusion_works/utils/extensions.dart';
 
+import 'modules/chat/chat_screen.dart';
 import 'modules/home_screen/home_screen.dart';
 import 'modules/login_screen/login_screen.dart';
 import 'modules/login_screen/login_screen_store.dart';
@@ -39,6 +41,10 @@ class Routes {
           widget: const ProfileScreen().withProvider(
             ProfileScreenStore(),
           ),
+        );
+      case AppRoutes.chatScreen:
+        return getRoute(
+          widget: const ChatScreen().withProvider(ChatStore()),
         );
       case AppRoutes.login:
         return getRoute(

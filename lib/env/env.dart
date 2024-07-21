@@ -6,4 +6,6 @@ part 'env.g.dart';
 abstract class Env {
   @EnviedField(varName: 'BASE_URL')
   static const String baseUrl = _Env.baseUrl;
+  @EnviedField(varName: 'LLM_BASE_URL')
+  static const String baseUrlModel = _Env.baseUrlModel;
 }
