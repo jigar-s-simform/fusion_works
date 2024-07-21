@@ -21,6 +21,7 @@ class ApiErrorStrings {
       'Something went wrong! Please try after some time.';
   static const String yourPasswordDoesNotMatches =
       'Your password & confirm password does not matches';
+  static const String skillsNotFound = 'No skills found';
 }
 
 class AppStrings {
@@ -75,6 +76,9 @@ class AppStrings {
   static const String tomorrowsPlanPlaceholder = "Enter your tomorrow's plan";
   static const String blockers = 'Blockers';
   static const String blockersPlaceholder = 'Enter faced blockers';
+  static const String inProgress = 'in progress';
+  static const String skillAdded = 'Skill added successfully!';
+  static const String fillAllFields = 'Please fill all fields';
 }
 
 class AssetsString {

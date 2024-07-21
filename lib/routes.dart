@@ -38,7 +38,7 @@ class Routes {
         );
       case AppRoutes.addSkills:
         return getRoute(
-          widget: const AddSkillsScreen().withProvider(SkillsStore()),
+          widget: AddSkillsScreen().withProvider(SkillsStore()),
         );
       case AppRoutes.txtAfterSplash:
         return getRoute(

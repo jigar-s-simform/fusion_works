@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:fusion_works/values/constants.dart';
-import 'package:provider/provider.dart';
 
-import '../../app.dart';
 import '../../gen/assets.gen.dart';
+import '../../model/request/add_skill/add_skill_dm.dart';
 import '../../utils/common_widgets/fw_button.dart';
+import '../../utils/enumeration.dart';
 import '../../values/app_colors.dart';
 import '../../values/app_theme.dart';
 import '../../values/strings.dart';
@@ -13,11 +13,12 @@ import 'skills_dropdown.dart';
 import 'skills_store.dart';
 
 class AddSkillsScreen extends StatelessWidget {
-  const AddSkillsScreen({super.key});
+  AddSkillsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final skillsStore = context.read<SkillsStore>();
+    final skillsStore = SkillsStore();
+
     return Material(
       child: SafeArea(
         bottom: false,
@@ -36,7 +37,7 @@ class AddSkillsScreen extends StatelessWidget {
                       child: Row(
                         children: [
                           InkWell(
-                            onTap: () => navigatorKey.currentState?.pop(),
+                            onTap: () => Navigator.of(context).pop(),
                             child: Padding(
                               padding: const EdgeInsets.all(12),
                               child: Assets.icons.close.svg(
@@ -70,7 +71,7 @@ class AddSkillsScreen extends StatelessWidget {
                       builder: (_) => SkillsDropdown<String>(
                         hint: AppStrings.chooseCategory,
                         value: skillsStore.selectedCategory,
-                        items: Constants.category,
+                        items: Constants.skillCategory,
                         onChanged: skillsStore.setSelectedCategory,
                       ),
                     ),
@@ -112,9 +113,7 @@ class AddSkillsScreen extends StatelessWidget {
                         onChanged: skillsStore.setSelectedProficiency,
                       ),
                     ),
-                    const SizedBox(
-                      height: 100,
-                    ),
+                    const SizedBox(height: 100),
                   ],
                 ),
               ),
@@ -139,14 +138,59 @@ class AddSkillsScreen extends StatelessWidget {
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(16),
-                      child: FwButton(
-                        text: AppStrings.add,
-                        setOnClickListener: () {},
+                      child: Observer(
+                        builder: (_) => FwButton(
+                          text: AppStrings.add,
+                          isLoading:
+                              skillsStore.addSkillState == NetworkState.loading,
+                          setOnClickListener: () async {
+                            if (skillsStore.selectedCategory == null ||
+                                skillsStore.selectedSkill == null ||
+                                skillsStore.selectedProficiency == null) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                    AppStrings.fillAllFields,
+                                  ),
+                                ),
+                              );
+                              return;
+                            }
+
+                            final addSkillRequest = AddSkillDm(
+                              skill: skillsStore.selectedSkill ?? '',
+                              category: skillsStore.selectedCategory ?? '',
+                              level: skillsStore.selectedProficiency
+                                      ?.toUpperCase() ??
+                                  '',
+                              status: 'PENDING',
+                            );
+
+                            // Call addSkill and handle response
+                            await skillsStore.addSkill(addSkillRequest);
+
+                            if (skillsStore.addSkillState ==
+                                NetworkState.success) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(AppStrings.skillAdded),
+                                ),
+                              );
+                            } else if (skillsStore.addSkillState ==
+                                NetworkState.error) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    '${skillsStore.errorMessage}',
+                                  ),
+                                ),
+                              );
+                            }
+                          },
+                        ),
                       ),
                     ),
-                    const SizedBox(
-                      height: 20,
-                    ),
+                    const SizedBox(height: 20),
                   ],
                 ),
               ),

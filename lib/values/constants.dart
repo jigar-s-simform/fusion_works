@@ -15,6 +15,12 @@ class Constants {
   static const String clear = 'Clear';
 
   static const skillProficiency = ['Beginner', 'Intermediate', 'Advanced'];
+  static const skillCategory = [
+    'Engineering',
+    'Solidity',
+    'The Graph',
+    'Truffle',
+  ];
   static const project = [
     'E-commerce Website',
     'Mobile Banking App',
