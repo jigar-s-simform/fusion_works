@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:fusion_works/values/constants.dart';
+import 'package:provider/provider.dart';
 
 import '../../app.dart';
 import '../../gen/assets.gen.dart';
@@ -12,11 +13,11 @@ import 'skills_dropdown.dart';
 import 'skills_store.dart';
 
 class AddSkillsScreen extends StatelessWidget {
-  AddSkillsScreen({super.key});
-  final SkillsStore skillsStore = SkillsStore();
+  const AddSkillsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final skillsStore = context.read<SkillsStore>();
     return Material(
       child: SafeArea(
         bottom: false,
@@ -139,8 +140,7 @@ class AddSkillsScreen extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.all(16),
                       child: FwButton(
-                        //isLoading: true
-                        text: 'Add',
+                        text: AppStrings.add,
                         setOnClickListener: () {},
                       ),
                     ),

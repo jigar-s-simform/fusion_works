@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:fusion_works/modules/feed_screen/feed_screen.dart';
+import 'package:fusion_works/modules/feed_screen/feed_store.dart';
 import 'package:fusion_works/modules/skills_screen/skills_store.dart';
 import 'package:fusion_works/utils/extensions.dart';
-import 'package:provider/provider.dart';
 
 import '../../gen/assets.gen.dart';
 import '../../values/app_colors.dart';
@@ -27,23 +28,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   // List of widgets representing different pages
   static final List<Widget> _widgetOptions = <Widget>[
-    const EventsScreen().withProviders([
-      createProviderFor<EventStore>(EventStore()..fetchAllEvents()),
-    ]),
-    SkillsScreen().withProviders(
-      [
-        createProviderFor<SkillsStore>(
-          SkillsStore()..fetchUserSkills(),
-        ),
-      ],
-    ),
-    const Text('Profile Page'),
-    MultiProvider(
-      providers: [
-        Provider<ProfileScreenStore>(create: (_) => ProfileScreenStore()),
-      ],
-      child: const ProfileScreen(),
-    ),
+    const EventsScreen().withProvider(EventStore()..getAllEvents()),
+    const SkillsScreen().withProvider(SkillsStore()..fetchUserSkills()),
+    const FeedScreen().withProvider(FeedScreenStore()..getDsuList()),
+    const ProfileScreen().withProvider(ProfileScreenStore()),
   ];
 
   @override

@@ -18,12 +18,17 @@ class ProfileScreen extends StatelessWidget {
     // profileStore.getProfile('admin@gmail.com');
 
     return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: Text('Profile'),
+        centerTitle: false,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16),
+              padding: const EdgeInsets.only(bottom: 16),
               child: Row(
                 children: [
                   Image.network(

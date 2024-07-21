@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../app.dart';
 import '../../gen/assets.gen.dart';
@@ -9,12 +10,11 @@ import 'secondary_skills/secondary_skills.dart';
 import 'skills_store.dart';
 
 class SkillsScreen extends StatelessWidget {
-  SkillsScreen({super.key});
-
-  final SkillsStore skillsStore = SkillsStore();
+  const SkillsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final skillsStore = context.read<SkillsStore>();
     final textTheme = Theme.of(context).textTheme;
 
     return DefaultTabController(

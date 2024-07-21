@@ -9,6 +9,7 @@ class AppRoutes {
   static const String login = '/loginScreen';
   static const String register = '/registerScreen';
   static const String events = '/events';
+  static const String addStatus = '/addStatus';
 }
 
 class ApiErrorStrings {
@@ -43,6 +44,7 @@ class AppStrings {
   static const String alreadyMember = 'Already a member? ';
   static const String register = 'Register';
   static const String calendar = 'Calendar';
+  static const String oopsSomethingWentWrong = 'Oops, Something went wrong';
 
   // Profile screen
   static const String mobileNumber = 'Mobile Number';
@@ -54,12 +56,24 @@ class AppStrings {
   static const String primarySkills = 'Primary Skills';
   static const String secondarySkills = 'Secondary Skills';
   static const String addSkill = 'Add Skill';
+  static const String addStatus = 'Add Status Update';
   static const String category = 'Category';
   static const String chooseCategory = 'Choose Category';
   static const String skill = 'Skill';
   static const String chooseSkill = 'Choose Skill';
   static const String proficiency = 'Proficiency';
   static const String chooseProficiency = 'Choose Proficiency';
+  static const String project = 'Project';
+  static const String chooseProject = 'Choose Project';
+  static const String date = 'Date';
+  static const String todaysUpdate = "Today's Update";
+  static const String add = 'Add';
+  static const String selectDate = 'Select date';
+  static const String todaysUpdatePlaceholder = "Enter your today's task";
+  static const String tomorrowsPlan = "Tomorrow's plan";
+  static const String tomorrowsPlanPlaceholder = "Enter your tomorrow's plan";
+  static const String blockers = 'Blockers';
+  static const String blockersPlaceholder = 'Enter faced blockers';
 }
 
 class AssetsString {

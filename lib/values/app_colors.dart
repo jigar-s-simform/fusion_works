@@ -17,6 +17,7 @@ class AppColors {
   static const Color darkOrange = Color(0xFFF7894C);
   static const Color mediumGrey = Color(0xFF6E7281);
   static const Color black = Color(0xFF000000);
+  static const Color transparent = Color(0x00000000);
 
   static const Color sectionListText = mediumGrey;
   static const Color chipBeginner = lightOrange;

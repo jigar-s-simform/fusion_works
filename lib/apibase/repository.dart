@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:fusion_works/model/events/event_response.dart';
+import 'package:fusion_works/model/request/dsu_list_req_dm.dart';
+import 'package:fusion_works/model/response/feed_status/dsu_res_dm.dart';
 import 'package:fusion_works/model/response/login/token.dart';
 import 'package:fusion_works/model/response/skill/skill_dm.dart';
 
@@ -47,6 +49,12 @@ class Repository {
 
   Future<List<SkillDm>> getUserSkills() async {
     return _apiCall<List<SkillDm>>(request: _apiService.getSkill);
+  }
+
+  Future<DsuResDm> getDsuList(DsuListReqDm dsuListReqDm) async {
+    return _apiCall<DsuResDm>(
+      request: () => _apiService.getDsuList(dsuListReqDm),
+    );
   }
 
   Future<EventResponse?> getEvents() async {
