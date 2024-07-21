@@ -1,5 +1,6 @@
 import 'package:mobx/mobx.dart';
 
+import '../../apibase/repository.dart';
 import '../../model/events/event.dart';
 
 part 'event_store.g.dart';
@@ -8,7 +9,9 @@ class EventStore = _EventStore with _$EventStore;
 
 abstract class _EventStore with Store {
   @observable
-  ObservableList<Event> events = ObservableList<Event>();
+  List<Event> events = ObservableList<Event>();
+
+  late String errorMessage;
 
   @action
   Future<void> createEvent(Event event) async {
@@ -52,5 +55,17 @@ abstract class _EventStore with Store {
     return events.firstWhere(
       (event) => event.id == eventId,
     );
+  }
+
+  Future<void> fetchAllEvents() async {
+    try {
+      errorMessage = '';
+      final result = await Repository.instance.getEvents();
+      if (result?.events != null) {
+        events = result!.events;
+      }
+    } catch (e) {
+      errorMessage = e.toString();
+    }
   }
 }

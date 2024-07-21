@@ -5,15 +5,15 @@ import 'positioned_event_card.dart';
 import 'time_line_background.dart';
 
 class TimelineEventCard extends StatelessWidget {
-  const TimelineEventCard({required this.event, super.key});
-  final List<NeatCleanCalendarEvent> event;
+  const TimelineEventCard({required this.events, super.key});
+  final List<NeatCleanCalendarEvent> events;
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Stack(
         children: [
-          ...event.map(
+          ...events.map(
             (meeting) => PositionedEventCard(
               event: meeting,
             ),
