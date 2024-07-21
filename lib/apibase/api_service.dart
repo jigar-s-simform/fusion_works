@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:fusion_works/model/response/llm_response_data.dart';
-import 'package:fusion_works/model/response/profile/profile.dart';
 import 'package:fusion_works/model/response/skill/skill_dm.dart';
 import 'package:retrofit/retrofit.dart';
 

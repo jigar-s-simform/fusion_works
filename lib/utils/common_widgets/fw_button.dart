@@ -7,10 +7,12 @@ class FwButton extends StatelessWidget {
     super.key,
     required this.text,
     required this.setOnClickListener,
+    this.isLoading = false,
   });
 
   final VoidCallback setOnClickListener;
   final String text;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -29,12 +31,21 @@ class FwButton extends StatelessWidget {
           ),
         ),
       ),
-      child: Text(
-        text,
-        style: textTheme.titleMedium?.copyWith(
-          color: Colors.white,
-        ),
-      ),
+      child: !isLoading
+          ? Text(
+              text,
+              style: textTheme.titleMedium?.copyWith(
+                color: Colors.white,
+              ),
+            )
+          : const SizedBox(
+              width: 30,
+              height: 30,
+              child: CircularProgressIndicator(
+                color: AppColors.white,
+                strokeWidth: 1.5,
+              ),
+            ),
     );
   }
 }

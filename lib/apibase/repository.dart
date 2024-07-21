@@ -6,7 +6,6 @@ import '../model/response/api_response.dart';
 import '../model/response/invalid_response_model.dart';
 import '../model/response/llm_response.dart';
 import '../model/response/llm_response_data.dart';
-import '../model/response/profile/profile.dart';
 import '../model/response/user/user.dart';
 import '../values/strings.dart';
 import 'api_service.dart';

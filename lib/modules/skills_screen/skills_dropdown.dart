@@ -19,57 +19,61 @@ class SkillsDropdown<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      child: Container(
-        width: 300,
-        height: 48,
-        decoration: BoxDecoration(
-          color: AppColors.divider,
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(
-            color: AppColors.lightGrey,
-          ),
+    return Container(
+      width: 300,
+      height: 48,
+      decoration: BoxDecoration(
+        color: AppColors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: AppColors.lightGrey,
         ),
-        child: DropdownButtonHideUnderline(
-          child: DropdownButton2<T>(
-            isExpanded: true,
-            value: value,
-            hint: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Text(
-                hint,
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                  fontFamily: AppTheme.monsterrat,
-                  color: AppColors.grey,
-                ),
+      ),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton2<T>(
+          isExpanded: true,
+          value: value,
+          hint: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Text(
+              hint,
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+                fontFamily: AppTheme.monsterrat,
+                color: AppColors.grey,
               ),
             ),
-            items: items.map<DropdownMenuItem<T>>((T value) {
-              return DropdownMenuItem<T>(
-                value: value,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Text(value.toString()),
-                ),
-              );
-            }).toList(),
-            onChanged: onChanged,
-            iconStyleData: const IconStyleData(
-              icon: Padding(
-                padding: EdgeInsets.all(10),
-                child: Icon(
-                  Icons.keyboard_arrow_down_rounded,
+          ),
+          items: items.map<DropdownMenuItem<T>>((T value) {
+            return DropdownMenuItem<T>(
+              value: value,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Text(
+                  value.toString(),
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    fontFamily: AppTheme.monsterrat,
+                  ),
                 ),
               ),
-              iconSize: 25,
+            );
+          }).toList(),
+          onChanged: onChanged,
+          iconStyleData: const IconStyleData(
+            icon: Padding(
+              padding: EdgeInsets.all(10),
+              child: Icon(
+                Icons.keyboard_arrow_down_rounded,
+              ),
             ),
-            dropdownStyleData: DropdownStyleData(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(14),
-              ),
+            iconSize: 25,
+          ),
+          dropdownStyleData: DropdownStyleData(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(14),
             ),
           ),
         ),

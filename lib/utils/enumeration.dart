@@ -43,7 +43,7 @@ enum SkillCategory {
     'Intermediate',
   ),
   advanced(
-    AppColors.blue,
+    AppColors.colorPrimary,
     AppColors.chipAdvanced,
     'Advanced',
   );
