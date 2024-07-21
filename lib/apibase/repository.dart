@@ -9,6 +9,8 @@ import '../model/response/api_response.dart';
 import '../model/response/invalid_response_model.dart';
 import '../model/response/llm_response.dart';
 import '../model/response/llm_response_data.dart';
+import '../model/response/register/register_request.dart';
+import '../model/response/register/register_response.dart';
 import '../model/response/user/user.dart';
 import '../values/strings.dart';
 import 'api_service.dart';
@@ -35,9 +37,12 @@ class Repository {
     return _apiCall<Token>(request: () => _apiService.login(email, password));
   }
 
-  Future<Token> register(String email, String password) async {
-    return _apiCall<Token>(
-        request: () => _apiService.register(email, password));
+  Future<RegisterResponse> register(
+    RegisterRequest request,
+  ) async {
+    return _apiCall<RegisterResponse>(
+      request: () => _apiService.register(request),
+    );
   }
 
   Future<LLMResponse<LLMResponseData<String>>> getModelResponse(
@@ -77,6 +82,7 @@ class Repository {
   }) async {
     try {
       final response = await request();
+      print("Reponse api call: ${response.data.toString()}");
       if (response.data != null) {
         return response.data as T;
       } else {
