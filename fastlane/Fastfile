@@ -1,0 +1,477 @@
+#-----------------------------------------------------------
+# Variables
+#-----------------------------------------------------------
+# NOTE: UPDATE the APP_ENV with the new hash after updating the environment variables
+
+# App Center configs for Android
+APP_CENTER_API_TOKEN = ENV['APP_CENTER_API_TOKEN']
+app_center_owner_name = 'aditya.c'
+app_center_owner_type = 'fusion-works'
+app_center_app_name = 'user'
+app_center_test_groups = 'codefest'
+app_center_destination_type = 'group'
+
+# Android configs
+STORE_PASSWORD = ENV['STORE_PASSWORD']
+
+#iOS configs
+ios_runnable_path = "ios_runnable"
+DISTRIBUTION_CERTIFICATE = ENV['DISTRIBUTION_CERTIFICATE']
+dev_profile_name = "Fusion Works Dev Distribution"
+prod_profile_name = "Fusion Works PROD Distribution"
+DEV_DISTRIBUTION_PROFILE = ENV['DEV_DISTRIBUTION_PROFILE']
+PROD_DISTRIBUTION_PROFILE = ENV['PROD_DISTRIBUTION_PROFILE']
+profile_file_name = 'profile.mobileprovision'
+certificate_file_name = 'certificate.p12'
+ASC_PASSWORD = ENV['ASC_PASSWORD']
+
+#-----------------------------------------------------------
+# Lanes
+#-----------------------------------------------------------
+
+desc 'Bumps pubspec version and creates a commit for the same along with a tag'
+desc 'Params'
+desc '  flavor:     Flavor to be built dev | uat | prod. Default is dev'
+desc 'Example'
+desc 'bundle exec fastlane bump_version flavor:prod'
+lane :bump_version do |options|
+  flavor = get_flavor options[:flavor]
+
+  # Fetch app version from pubspec
+  pub_version = get_pubspec_version
+  puts "Current version: #{pub_version}"
+
+  # Update pubspec version if a release is already done for the same version
+  if check_for_tag(pub_version, flavor)
+    pub_version = bump_pubspec_version
+    puts "Updated version #{pub_version}"
+  # Create version bump commit
+  commit_new_version(pub_version, flavor)
+  end
+  push_tag(pub_version, flavor)
+end
+
+desc 'Publishes the app to Hostinger, App Center, and Testflight'
+desc 'Params'
+desc '  flavor:     Flavor to be built dev | uat | prod. Default is dev'
+desc 'Example'
+desc 'bundle exec fastlane release_beta flavor:prod'
+lane :release_beta do |options|
+    appcenter_android options
+    testflight_ios options
+end
+
+desc 'Publishes the app to App Center'
+desc 'Params'
+desc '  flavor:     Flavor to be built dev | uat | prod. Default is dev'
+desc 'Example'
+desc 'bundle exec fastlane appcenter_android flavor:prod'
+lane :appcenter_android do |options|
+  flavor = get_flavor options[:flavor]
+
+  # Prepare flutter project
+  write_base64_to_file(content: APP_ENV, file_path: File.expand_path(File.join('..', '.env')))
+  if flavor == "prod"
+    generate_keystore
+  end
+  flutter_clean
+  flutter_build_runner
+
+  # Fetch app version from pubspec
+  pub_version = get_pubspec_version
+  puts pub_version
+  app_version = pub_version.split('+')
+  puts app_version
+
+  # Build apk
+  UI.message "Building android #{flavor} app with version #{app_version[0]}(#{app_version[1]})"
+  output_type = 'apk'
+  apk_path = File.join('..', 'build', 'app', 'outputs', 'apk', flavor, 'release', "app-#{flavor}-release.apk")
+  flutter_android_build flavor, app_version[0], app_version[1], output_type
+
+  output_path = File.expand_path(apk_path)
+
+  # Upload to appcenter with changelog
+  changelog = read_changelog(pub_version, flavor)
+  appcenter_upload(
+      api_token: APP_CENTER_API_TOKEN,
+      owner_name: app_center_owner_name,
+      owner_type: app_center_owner_type,
+      app_name: app_center_app_name,
+      file: output_path,
+      destinations: app_center_test_groups,
+      destination_type: app_center_destination_type,
+      release_notes: changelog || 'New Release',
+      app_os: 'Android',
+  )
+end
+
+desc 'Publishes the IOS app to Testflight for QA'
+desc 'Params'
+desc '  flavor:                 Flavor to be built uat | prod. Default is dev'
+desc 'Example'
+desc 'bundle exec fastlane testflight_ios flavor:prod'
+lane :testflight_ios do |options|
+  itc_team_id = CredentialsManager::AppfileConfig.try_fetch_value(:itc_team_id)
+  team_id = CredentialsManager::AppfileConfig.try_fetch_value(:team_id)
+  ENV["FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD"] = ASC_PASSWORD
+
+  # Prepare flutter project
+  write_base64_to_file(content: APP_ENV, file_path: File.expand_path(File.join('..', '.env')))
+  flutter_clean
+  pod_clean_install
+  flutter_build_runner
+
+  # Fetch app version from pubspec
+  pub_version = get_pubspec_version
+  puts pub_version
+  app_version = pub_version.split('+')
+  puts app_version
+
+  flavor = get_flavor options[:flavor]
+  app_identifier = flavor == 'prod' ? "com.fusion.works" : "com.fusion.works.#{flavor}"
+
+  # Create Certificate and Profile file from base64 string
+  certificate_path = File.expand_path(File.join('..', ios_runnable_path, certificate_file_name))
+  profile_path = File.expand_path(File.join('..', ios_runnable_path, profile_file_name))
+  write_base64_to_file(content: DISTRIBUTION_CERTIFICATE, file_path: certificate_path)
+  distribution_profile = DEV_DISTRIBUTION_PROFILE
+  if flavor == 'prod'
+    distribution_profile = PROD_DISTRIBUTION_PROFILE
+  else
+    distribution_profile = DEV_DISTRIBUTION_PROFILE
+  end
+  write_base64_to_file(content: distribution_profile, file_path: profile_path)
+
+  # Create temporary keychain to store certificate
+  keychain_name = "cicd_temp_keychain"
+  keychain_password = "temp"
+  setup_keychain(keychain_name, keychain_password)
+
+  install_provisioning_profile(path: profile_path)
+  import_certificate(
+    certificate_path: certificate_path,
+    certificate_password: '',
+    keychain_name: keychain_name,
+    keychain_password: keychain_password
+  )
+
+  # Update code signing settings to manually sign using the certificate and profile we provide
+  profile_name = dev_profile_name
+  if flavor == 'prod'
+    profile_name = prod_profile_name
+  else
+    profile_name = dev_profile_name
+  end
+  update_code_signing_settings(
+     use_automatic_signing: false,
+     code_sign_identity: "Apple Distribution",
+     bundle_identifier: app_identifier,
+     profile_name: profile_name,
+     build_configurations: ["Release-#{flavor}"],
+     path: File.expand_path(File.join('..', 'ios', 'Runner.xcodeproj')),
+  )
+
+  # Build IOS App
+  ipa_output_name = "app-#{flavor}.ipa"
+  UI.message "Building ios #{flavor} app with version #{app_version[0]}(#{app_version[1]})"
+  ios_output_path = File.expand_path(File.join('..', ios_runnable_path))
+  gym(
+    clean: true,
+    scheme: flavor,
+    configuration: "Release-#{flavor}",
+    workspace: File.expand_path(File.join('..', 'ios', 'Runner.xcworkspace')),
+    export_method: 'app-store',
+    output_name: ipa_output_name,
+    output_directory: ios_output_path,
+    build_path: ios_output_path,
+    buildlog_path: ios_output_path,
+    destination: "generic/platform=iOS",
+    codesigning_identity: "Apple Distribution: SIMFORM LLC (#{team_id})",
+  )
+
+  # Release over Testflight
+  testflight(
+      app_identifier: app_identifier,
+      ipa: lane_context[SharedValues::IPA_OUTPUT_PATH],
+      skip_waiting_for_build_processing: true,
+      team_id: itc_team_id,
+      apple_id: flavor == 'prod' ? "6560104942" : "6560104919",
+  )
+end
+
+#-------------------------------------------------------------------------------
+# Helper functions
+#-------------------------------------------------------------------------------
+
+desc 'Removes pod related files and runs pod install command in the ios directory'
+def pod_clean_install
+  Dir.chdir '../ios' do
+    sh 'rm -rf .symlinks Pods Podfile.lock && pod install' do |error|
+      unless error.exitstatus.eql? 0
+        UI.message error
+        UI.user_error! 'Unable to install pods.'
+      end
+    end
+  end
+end
+
+desc 'Runs flutter clean and pub get command in the project directory'
+def flutter_clean
+  Dir.chdir '..' do
+    sh 'flutter clean && flutter pub get' do |error|
+      unless error.exitstatus.eql? 0
+        UI.message error
+        UI.user_error! 'Unable to prepare flutter project.'
+      end
+    end
+  end
+end
+
+desc 'Runs dart build runner in project directory'
+def flutter_build_runner
+  Dir.chdir '..' do
+    sh 'dart run build_runner build -d' do  |error|
+      unless error.exitstatus.eql? 0
+        UI.message error
+        UI.user_error! 'Unable to run build runner'
+      end
+    end
+  end
+end
+
+desc 'Builds android apk'
+def flutter_android_build(flavor, version, build, type = 'apk')
+  cmd = "flutter build #{type} --release --flavor #{flavor} -t lib/main_#{flavor}.dart"
+  cmd += " --build-name=#{version}" if version
+  cmd += " --build-number=#{build}" if build
+  Dir.chdir '..' do
+    sh cmd do |error|
+      unless error.exitstatus.eql? 0
+        UI.message error
+        UI.user_error! 'Unable to build android app!'
+      end
+    end
+  end
+end
+
+desc 'Builds android aab'
+def flutter_android_build_aab(flavor, version, build)
+  cmd = "flutter build appbundle --release --flavor #{flavor} -t lib/main_#{flavor}.dart"
+  cmd += " --build-name=#{version}" if version
+  cmd += " --build-number=#{build}" if build
+  Dir.chdir '..' do
+    sh cmd do |error|
+      unless error.exitstatus.eql? 0
+        UI.message error
+        UI.user_error! 'Unable to build android app!'
+      end
+    end
+  end
+end
+
+desc 'reads given file'
+def read_file(file_path)
+  File.open(file_path, 'r', &:read).to_s
+end
+
+desc 'write json to given file'
+def write_file(content:, file_path:)
+  File.open(file_path, 'w') { |file| file.write(content) }
+end
+
+desc 'Prepends given text to the specified file.'
+def prepend_to_file(file_path, text_to_prepend)
+  # Read the original file content
+  original_content = File.read(file_path)
+
+  # Open the file for writing
+  File.open(file_path, 'w') do |file|
+    # Write the text to prepend followed by a newline
+    file.puts text_to_prepend
+    # Write the original content
+    file.write original_content
+  end
+end
+
+desc 'decode base 64 string and write to specified  file'
+def write_base64_to_file(content:, file_path:)
+  require "base64"
+  require 'fileutils'
+
+  dirname = File.dirname(file_path)
+  unless File.directory?(dirname)
+    FileUtils.mkdir_p(dirname)
+  end
+
+  decode_base64_content = Base64.decode64(content)
+  File.open(file_path, 'w') { |file| file.write(decode_base64_content) }
+end
+
+desc 'Increases version by given inc_type. defaults to build.'
+def increase_version(version, inc_type = nil)
+  build_number = version.split('+')[1].to_i
+  version_array = version.split('+')[0].to_s.split('.').map(&:to_i)
+  case inc_type
+      when 'patch'
+        version_array[2] = (version_array[2] || 0) + 1
+      when 'minor'
+        version_array[1] = (version_array[1] || 0) + 1
+      when 'major'
+        version_array[0] = (version_array[0] || 0) + 1
+      else
+        build_number = (build_number || 0) + 1
+  end
+  version_array.join('.') + "+" + build_number.to_s
+end
+
+desc 'Gets the full version from pubspec.yaml'
+def get_pubspec_version
+  fastlane_require 'yaml'
+  pubspec_file = File.join('..', 'pubspec.yaml')
+  pubspec = YAML.load_file(pubspec_file)
+  pubspec['version'].to_s
+end
+
+desc 'Gets the full version from pubspec.yaml, increments it, and writes it back'
+def bump_pubspec_version(inc_type = nil)
+  fastlane_require 'yaml'
+  pubspec_file = File.join('..', 'pubspec.yaml')
+  pubspec = YAML.load_file(pubspec_file)
+  lines = File.readlines(pubspec_file)
+  version_index = lines.index { |line| line =~ /^version:/ }
+  new_version = ''
+  if version_index
+    new_version = increase_version(pubspec['version'].to_s, inc_type)
+    lines[version_index] = "version: #{new_version}\n"
+    File.open(pubspec_file, 'w') { |f| f.write(lines.join) }
+  else
+    raise "Version field not found in #{pubspec_file}"
+  end
+
+  new_version
+end
+
+desc 'reads changelog from file'
+def read_changelog(version, flavor)
+    release_notes_file_path = '../CHANGELOG.md'
+    version = "Version: #{version}\n"
+    version = version + (flavor == 'dev' ? "Flavor: #{flavor.upcase}\n\n" : "\n")
+    prepend_to_file(release_notes_file_path, version)
+    data = File.read(release_notes_file_path)
+    UI.message "Change Log:\n" + data
+    data
+end
+
+desc 'creates a temporary keychain'
+def setup_keychain(name, password)
+    delete_keychain(
+        name: name
+    ) if File.exist? File.expand_path("~/Library/Keychains/#{name}-db")
+
+    create_keychain(
+        name: name,
+        password: password,
+        unlock: true,
+        timeout: 3600
+    )
+end
+
+def post_ios_build_cleanup
+    ios_runnable_path = "ios_runnable"
+    sh "rm -rf ../#{ios_runnable_path}" do |error|
+      unless error.exitstatus.eql? 0
+        UI.message error
+        UI.user_error! 'Unable to cleanup ios runnable files.'
+      end
+    end
+end
+
+desc 'Tells whether the tag exists or not. Allowing to decide whether to bump version or not.'
+def check_for_tag(version, flavor)
+    tag = "v#{version}-#{flavor}"
+    cmd = "git fetch && git rev-parse #{tag}"
+    shouldBump = false
+    sh cmd do |error|
+    puts error.exitstatus
+      if error.exitstatus.eql? 0
+        puts 'Tag exists. Bumping pubspec version!'
+        shouldBump = true
+      else
+        puts "No need to bump version for #{tag}"
+        shouldBump = false
+      end
+    end
+    shouldBump
+end
+
+def commit_new_version(version, flavor)
+    tag = "v#{version}-#{flavor}"
+    cmd = "git fetch && git rev-parse #{tag}"
+    puts "Pushing new version commit with tag: #{tag}"
+    sh "git config user.name \"GitHub Actions Bot\""
+    sh "git config user.email \"github-actions.codefest\""
+    sh "git add -A"
+    sh "git commit -m \":rocket: Version Bump #{tag}\""
+    sh "git push"
+end
+
+def push_tag(version, flavor)
+    tag = "v#{version}-#{flavor}"
+    cmd = "git fetch && git rev-parse #{tag}"
+    sh cmd do |error|
+      if error.exitstatus.eql? 0
+        puts 'Tag exists. Not pushing a new tag!'
+      else
+        puts "Pushing new tag: #{tag}"
+        sh "git config user.name \"GitHub Actions Bot\""
+        sh "git config user.email \"github-actions.codefest\""
+        sh "git tag \"#{tag}\""
+        sh "git push origin --tags"
+      end
+    end
+end
+
+desc 'Parses flavor string as per app flavors. Default is dev.'
+def get_flavor(flavor = nil)
+    app_flavor = 'dev'
+    case flavor&.downcase
+        when 'prod'
+            app_flavor = 'prod'
+        when 'uat'
+            app_flavor = 'uat'
+        else
+            app_flavor = 'dev'
+    end
+    app_flavor
+end
+
+desc 'Generates the keystore file for android app signing'
+def generate_keystore()
+    keystore_file = File.join('..', 'android', 'keystore.properties')
+    File.open(keystore_file, "w") do |f|
+        f.write("storePassword=#{STORE_PASSWORD}\n")
+        f.write("keyPassword=#{STORE_PASSWORD}\n")
+        f.write("keyAlias=upload\n")
+        f.write("storeFile=../gd_keystore.keystore\n")
+    end
+end
+
+desc "create a zip file from a particular folder's contents"
+def create_zip_from_folder(parent_folder, output_zip_path)
+  require 'zip'
+  parent_folder = File.expand_path(parent_folder)
+  output_zip_path = File.expand_path(output_zip_path)
+
+  Zip::File.open(output_zip_path, Zip::File::CREATE) do |zipfile|
+    subfolders = Dir[File.join(parent_folder, '*')].select { |path| File.directory?(path) }
+
+    subfolders.each do |subfolder|
+      subfolder_name = File.basename(subfolder)
+      Dir[File.join(subfolder, '**', '**')].each do |file|
+        # Maintain the subfolder's structure within the zip file
+        zipfile.add(File.join(subfolder_name, file.sub(subfolder + '/', '')), file)
+      end
+    end
+  end
+end

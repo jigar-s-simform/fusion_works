@@ -1,0 +1,35 @@
+name: ios-release
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Name of the branch to release build from'
+        required: true
+        default: 'main'
+      flavor:
+        description: 'Name of the flavor to generate build of. Possible inputs: dev, uat, prod.'
+        required: true
+        default: 'dev'
+jobs:
+  build:
+    runs-on: macos-14
+    env:
+      DISTRIBUTION_CERTIFICATE: ${{ secrets.DISTRIBUTION_CERTIFICATE }}
+      DEV_DISTRIBUTION_PROFILE: ${{ secrets.DEV_DISTRIBUTION_PROFILE }}
+      PROD_DISTRIBUTION_PROFILE: ${{ secrets.PROD_DISTRIBUTION_PROFILE }}
+      ASC_PASSWORD: ${{ secrets.ASC_PASSWORD }}
+    steps:
+      - name: Checkout input branch from github
+        uses: actions/checkout@v4.1.1
+        with:
+          ref: ${{ github.event.inputs.branch }}
+      - name: Flutter action
+        uses: subosito/flutter-action@v2.13.0
+        with:
+          flutter-version: '3.16.5'
+          cache: true
+          cache-key: 'flutter-macos-stable-3.16.5-apple'
+          cache-path: '${{ runner.tool_cache }}/flutter/macos-stable-3.16.5-apple'
+          pub-cache-key: 'flutter-pub-macos-stable-3.16.5-apple'
+      - run: bundle install
+      - run: bundle exec fastlane testflight_ios flavor:${{ github.event.inputs.flavor }}

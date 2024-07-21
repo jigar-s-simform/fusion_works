@@ -1,0 +1,62 @@
+name: android-release
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Name of the branch to release build from'
+        required: true
+        default: 'main'
+      flavor:
+        description: 'Name of the flavor to generate build of. Possible inputs: dev, uat, prod.'
+        required: true
+        default: 'dev'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      APP_ENV: ${{ secrets.APP_ENV }}
+      APP_CENTER_API_TOKEN: ${{ secrets.APP_CENTER_API_TOKEN }}
+      STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
+    steps:
+      - name: Checkout input branch from github
+        uses: actions/checkout@v4.1.1
+        with:
+          ref: ${{ github.event.inputs.branch }}
+      - name: Setup Java JDK
+        uses: actions/setup-java@v4.2.1
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'gradle'
+          cache-dependency-path: |
+            android/*.gradle*
+            android/**/gradle-wrapper.properties
+      - name: Flutter action
+        uses: subosito/flutter-action@v2.13.0
+        with:
+          flutter-version: '3.16.5'
+          cache: true
+          cache-key: 'flutter-macos-stable-3.16.5-apple'
+          cache-path: '${{ runner.tool_cache }}/flutter/macos-stable-3.16.5-apple'
+          pub-cache-key: 'flutter-pub-macos-stable-3.16.5-apple'
+      - name: Install Ruby
+        run: sudo apt install ruby-full -y
+      - run: sudo chmod -R a+w /var/lib/gems/
+      - run: gem install bundler
+      - name: Install Gem dependencies
+        run: bundle install
+      - name: Start building Android App and Deployment
+        run: bundle exec fastlane appcenter_android flavor:${{ github.event.inputs.flavor }}
+      - name: Upload App Bundle Artifact for Prod flavor
+        if: ${{ contains(github.event.inputs.flavor, 'prod') }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-bundle
+          overwrite: true
+          retention-days: 5
+          compression-level: 0
+          if-no-files-found: ignore
+          path: |
+            android/build/app/outputs/bundle/prodRelease/app-prod-release.aab
+            android/build/app/intermediates/merged_native_libs/prodRelease/out/lib/NativeDebugSymbols.zip
+            
