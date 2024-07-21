@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fusion_works/modules/chat/chat_store.dart';
+import 'package:fusion_works/modules/feed_screen/add_status_screen.dart';
 import 'package:fusion_works/modules/skills_screen/add_skills_screen.dart';
+import 'package:fusion_works/modules/skills_screen/skills_store.dart';
 import 'package:fusion_works/utils/extensions.dart';
 
 import 'modules/chat/chat_screen.dart';
@@ -35,7 +37,7 @@ class Routes {
         );
       case AppRoutes.addSkills:
         return getRoute(
-          widget: AddSkillsScreen(),
+          widget: const AddSkillsScreen().withProvider(SkillsStore()),
         );
       case AppRoutes.txtAfterSplash:
         return getRoute(
@@ -62,6 +64,10 @@ class Routes {
           widget: const RegisterScreen().withProvider(
             RegisterScreenStore(),
           ),
+        );
+      case AppRoutes.addStatus:
+        return getRoute(
+          widget: const AddStatusScreen(),
         );
 
       /// An invalid route. User shouldn't see this, it's for debugging purpose

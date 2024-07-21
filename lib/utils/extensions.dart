@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_neat_and_clean_calendar/neat_and_clean_calendar_event.dart';
 import 'package:fusion_works/values/app_colors.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -45,6 +46,14 @@ extension ContextExtension on BuildContext {
   bool get isPortrait => MediaQuery.orientationOf(this) == Orientation.portrait;
 
   Size get screenSize => MediaQuery.sizeOf(this);
+
+  TextTheme get textTheme => Theme.of(this).textTheme;
+}
+
+extension PagingStatusExtension on PagingStatus {
+  bool get isLoadingFirstPage => this == PagingStatus.loadingFirstPage;
+
+  bool get isSubsequentPageError => this == PagingStatus.subsequentPageError;
 }
 
 /// provides extension to get a dependency from provider
@@ -83,6 +92,26 @@ extension DateUtils on DateTime {
     required String dateString,
   }) {
     return DateFormat(format).parse(dateString);
+  }
+
+  String formatForStatusDm() {
+    final now = DateTime.now();
+    final timeDifference = now.difference(this);
+
+    if (timeDifference.inSeconds <= 60) {
+      return 'Now';
+    } else if (timeDifference.inMinutes < 60) {
+      return 'Few minutes ago';
+    } else if (timeDifference.inHours < 24) {
+      // If difference is less than 24 hours
+      return '${hour.toString().padLeft(2, '0')}:${minute.toString().padLeft(2, '0')}';
+    } else if (timeDifference.inDays == 1) {
+      // If difference is exactly one day
+      return 'Yesterday';
+    } else {
+      // If difference is more than one day
+      return '${day.toString().padLeft(2, '0')}/${month.toString().padLeft(2, '0')}/$year';
+    }
   }
 }
 

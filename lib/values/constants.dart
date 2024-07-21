@@ -12,4 +12,5 @@ class Constants {
   static const String firstMessage = 'How can I help you today?';
 
   static const skillProficiency = ['Beginner', 'Intermediate', 'Advanced'];
+  static const project =  ['Project 1', 'Project 2', 'Project 3'];
 }

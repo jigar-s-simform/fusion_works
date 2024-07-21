@@ -29,6 +29,7 @@ class HeaderInterceptor extends Interceptor {
         final token = await checkToken();
         if (token?.isNotEmpty ?? false) {
           options.headers.putIfAbsent('Authorization', () => token);
+          options.headers.putIfAbsent('Cookie', () => 'jwt=$token');
         }
       }
       _logger.printSuccessLog(

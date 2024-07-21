@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:fusion_works/values/app_colors.dart';
 
@@ -8,27 +10,28 @@ class AppTheme {
 
   static final ThemeData lightTheme = ThemeData(
     colorSchemeSeed: AppColors.colorPrimary,
-    fontFamily: 'Fonts/Montserrat.ttf',
+    highlightColor: Platform.isIOS ? AppColors.transparent : null,
+    splashColor: Platform.isIOS ? AppColors.transparent : null,
+    splashFactory: Platform.isIOS ? NoSplash.splashFactory : null,
+    fontFamily: 'Montserrat',
     textTheme: const TextTheme(
       bodyMedium: TextStyle(
         fontWeight: FontWeight.w400,
-        fontFamily: 'Montserrat',
+        fontSize: 14,
       ),
       bodySmall: TextStyle(
         fontWeight: FontWeight.w500,
-        fontFamily: 'Montserrat',
+        fontSize: 12,
       ),
       titleMedium: TextStyle(
-        fontFamily: 'Montserrat',
         fontWeight: FontWeight.w600,
       ),
       titleSmall: TextStyle(
-        fontFamily: 'Montserrat',
         fontWeight: FontWeight.w500,
       ),
-      labelLarge: TextStyle(
-        fontFamily: 'Montserrat',
+      titleLarge: TextStyle(
         fontWeight: FontWeight.w600,
+        fontSize: 22,
       ),
     ),
   );
