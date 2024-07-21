@@ -70,7 +70,7 @@ class AddSkillsScreen extends StatelessWidget {
                       builder: (_) => SkillsDropdown<String>(
                         hint: AppStrings.chooseCategory,
                         value: skillsStore.selectedCategory,
-                        items: const ['Category 1', 'Category 2', 'Category 3'],
+                        items: Constants.category,
                         onChanged: skillsStore.setSelectedCategory,
                       ),
                     ),
@@ -89,7 +89,7 @@ class AddSkillsScreen extends StatelessWidget {
                       builder: (_) => SkillsDropdown<String>(
                         hint: AppStrings.chooseSkill,
                         value: skillsStore.selectedSkill,
-                        items: const ['Skill 1', 'Skill 2', 'Skill 3'],
+                        items: Constants.skills,
                         onChanged: skillsStore.setSelectedSkill,
                       ),
                     ),

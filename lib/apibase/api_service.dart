@@ -63,4 +63,10 @@ abstract class ApiService {
   Future<APIResponse<EventResponse>> getEventList(
     @Body() Map<String, dynamic> eventParams,
   );
+
+  ///get response from docs
+  @GET('/chat')
+  Future<APIResponse<String>> getDocsModelResponse(
+    @Query('input') String input,
+  );
 }

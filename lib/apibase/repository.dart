@@ -57,6 +57,12 @@ class Repository {
     );
   }
 
+  Future<String> getDocsModelResponse(String input) async {
+    return _apiCall<String>(
+      request: () => _apiService.getDocsModelResponse(input),
+    );
+  }
+
   Future<EventResponse?> getEvents() async {
     return _apiCall<EventResponse>(
       request: () => _apiService.getEventList(
@@ -79,6 +85,7 @@ class Repository {
     } on String {
       rethrow;
     } on DioException catch (error) {
+      print("Error aaya $error");
       if (error.response == null) {
         throw Exception(ApiErrorStrings.noInternetMsg);
       }

@@ -9,15 +9,15 @@ class PrimarySkills extends StatelessWidget {
   Widget build(BuildContext context) {
     // Example data for primary skills
     final primarySkills = [
-      Skill('Skill 1', 'Description of Skill 1', 'BEGINNER'),
-      Skill('Skill 2', 'Description of Skill 2', 'BEGINNER'),
-      Skill('Skill 3', 'Description of Skill 3', 'INTERMEDIATE'),
-      Skill('Skill 4', 'Description of Skill 4', 'INTERMEDIATE'),
-      Skill('Skill 5', 'Description of Skill 5', 'ADVANCED'),
-      Skill('Skill 6', 'Description of Skill 6', 'ADVANCED'),
-      Skill('Skill 7', 'Description of Skill 7', 'BEGINNER'),
-      Skill('Skill 8', 'Description of Skill 8', 'INTERMEDIATE'),
-      Skill('Skill 9', 'Description of Skill 9', 'ADVANCED'),
+      Skill('JavaScript', 'Web app development', 'BEGINNER'),
+      Skill('Python', 'Scripting and analysis', 'BEGINNER'),
+      Skill('Flutter', 'Mobile app development', 'INTERMEDIATE'),
+      Skill('React', 'Dynamic web interfaces', 'INTERMEDIATE'),
+      Skill('Java', 'Object-oriented programming', 'ADVANCED'),
+      Skill('Django', 'Backend development', 'ADVANCED'),
+      Skill('SQL', 'Database management', 'BEGINNER'),
+      Skill('Node.js', 'Server-side development', 'INTERMEDIATE'),
+      Skill('Machine Learning', 'ML algorithms', 'ADVANCED'),
     ];
 
     return SkillList(skills: primarySkills);

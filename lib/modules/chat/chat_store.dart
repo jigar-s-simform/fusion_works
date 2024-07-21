@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:mobx/mobx.dart';
 
 import '../../model/message.dart';
+import '../../values/constants.dart';
 
 part 'chat_store.g.dart';
 
@@ -13,6 +14,8 @@ abstract class _ChatStore with Store {
   @observable
   bool isResponseLoading = false;
   final scrollController = ScrollController();
+  @observable
+  bool isDatabaseSelected = true;
 
   @action
   void addMessage(String content, bool isAssistant) {
@@ -37,9 +40,18 @@ abstract class _ChatStore with Store {
   void sendMessageFromUser(String content) {
     isResponseLoading = true;
     addMessage('', false);
-    Future.delayed(const Duration(milliseconds: 5000), () {
-      isResponseLoading = false;
-      editLastMessageWithContent(content);
-    });
+    isResponseLoading = false;
+    editLastMessageWithContent(content);
+  }
+
+  @action
+  void setIsDatabaseSelected(bool isSelected) {
+    isDatabaseSelected = isSelected;
+  }
+
+  @action
+  void clearChats() {
+    messages.clear();
+    addMessage(Constants.firstMessage, true);
   }
 }

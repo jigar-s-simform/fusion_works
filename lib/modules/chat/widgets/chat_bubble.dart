@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../../../gen/assets.gen.dart';
 import '../../../model/message.dart';
+import '../../../values/app_colors.dart';
 import '../chat_store.dart';
 
 class ChatBubble extends StatefulWidget {
@@ -41,13 +42,22 @@ class ChatBubbleState extends State<ChatBubble> {
     final chatContents = [
       ClipRRect(
         borderRadius: const BorderRadius.all(Radius.circular(20)),
-        child: Image.asset(
-          widget.message.isAssistant
-              ? Assets.images.bot.path
-              : Assets.images.profileImage.path,
-          width: 40,
-          height: 40,
-          fit: BoxFit.cover,
+        child: ColoredBox(
+          color: AppColors.colorPrimary,
+          child: Padding(
+            padding: widget.message.isAssistant
+                ? EdgeInsets.all(10)
+                : EdgeInsets.all(0),
+            child: Image.asset(
+              alignment: Alignment.center,
+              widget.message.isAssistant
+                  ? Assets.images.bot.path
+                  : Assets.images.profileImage.path,
+              width: widget.message.isAssistant ? 16 : 34,
+              height: widget.message.isAssistant ? 16 : 34,
+              fit: BoxFit.cover,
+            ),
+          ),
         ),
       ),
       const SizedBox(width: 8),
@@ -73,13 +83,12 @@ class ChatBubbleState extends State<ChatBubble> {
           ),
         ),
       ),
-      const SizedBox(width: 12),
     ];
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: chatContents,
       ),
     );

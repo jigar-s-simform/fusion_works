@@ -10,7 +10,22 @@ class Constants {
   static const eventCardHeight = 52;
   static const double timeLineCardHeight = 72;
   static const String firstMessage = 'How can I help you today?';
+  static const String database = 'Database';
+  static const String documents = 'Documents';
+  static const String clear = 'Clear';
 
   static const skillProficiency = ['Beginner', 'Intermediate', 'Advanced'];
-  static const project =  ['Project 1', 'Project 2', 'Project 3'];
+  static const project = [
+    'E-commerce Website',
+    'Mobile Banking App',
+    'Social Media Platform'
+  ];
+
+  static const category = [
+    'Web Development',
+    'Mobile Development',
+    'Data Science'
+  ];
+
+  static const skills = ['JavaScript', 'Python', 'Flutter'];
 }

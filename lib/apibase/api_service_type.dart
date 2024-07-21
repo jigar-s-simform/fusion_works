@@ -12,13 +12,15 @@ class ApiServiceType {
       options: BaseOptions(
         baseUrl: FlavorValues.instance.baseUrlModel,
       ),
-      shouldAuthenticate: false,
     ),
   );
 
   static final ApiService apiService = ApiService(
     _getDio(
-      options: BaseOptions(baseUrl: FlavorValues.instance.baseUrl),
+      options: BaseOptions(
+        baseUrl: FlavorValues.instance.baseUrl,
+        contentType: 'application/json',
+      ),
     ),
   );
 
