@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fusion_works/modules/profileScreen/profile_screen_store.dart';
+import 'package:fusion_works/utils/extensions.dart';
 import 'package:fusion_works/values/app_colors.dart';
 import 'package:fusion_works/values/strings.dart';
 import 'package:provider/provider.dart';
@@ -36,7 +37,7 @@ class ProfileScreen extends StatelessWidget {
                     height: 56,
                     width: 56,
                   ),
-                  SizedBox(width: 16),
+                  const SizedBox(width: 16),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -78,6 +79,23 @@ class ProfileScreen extends StatelessWidget {
               svgImagePath: AssetsString.calendarIcon,
               title: AppStrings.dateOfBirth,
               subtitle: '20/10/1997',
+            ),
+            const Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Projects',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+            ProfileListViewTile(
+              svgImagePath: AssetsString.briefcase,
+              title: 'Your Projects',
+              subtitle: '20 Projects',
+              trailingIcon: Icons.arrow_forward_ios,
+              onTap: () => context.pushNamed<void>(AppRoutes.projectList),
             ),
           ],
         ),

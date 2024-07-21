@@ -9,11 +9,15 @@ class ProfileListViewTile extends StatelessWidget {
     required this.svgImagePath,
     required this.title,
     required this.subtitle,
+    this.onTap,
+    this.trailingIcon,
   });
 
   final String svgImagePath;
   final String title;
   final String subtitle;
+  final VoidCallback? onTap;
+  final IconData? trailingIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -21,36 +25,42 @@ class ProfileListViewTile extends StatelessWidget {
 
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.all(16),
-          child: Row(
-            children: [
-              SvgPicture.asset(
-                svgImagePath,
-                width: 24,
-                height: 24,
-                colorFilter: const ColorFilter.mode(
-                  AppColors.colorPrimary,
-                  BlendMode.srcIn,
+        InkWell(
+          onTap: onTap ?? () {},
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Row(
+              children: [
+                SvgPicture.asset(
+                  svgImagePath,
+                  width: 24,
+                  height: 24,
+                  colorFilter: const ColorFilter.mode(
+                    AppColors.colorPrimary,
+                    BlendMode.srcIn,
+                  ),
                 ),
-              ),
-              const SizedBox(width: 16),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    title,
-                    style: theme.textTheme.bodySmall
-                        ?.copyWith(color: AppColors.darkGrey),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        title,
+                        style: theme.textTheme.bodySmall
+                            ?.copyWith(color: AppColors.darkGrey),
+                      ),
+                      Text(
+                        subtitle,
+                        style: theme.textTheme.titleSmall,
+                      ),
+                    ],
                   ),
-                  Text(
-                    subtitle,
-                    style: theme.textTheme.titleSmall,
-                  ),
-                ],
-              ),
-            ],
+                ),
+                Icon(trailingIcon)
+              ],
+            ),
           ),
         ),
         const Divider(
