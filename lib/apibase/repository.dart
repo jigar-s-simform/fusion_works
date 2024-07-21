@@ -76,4 +76,38 @@ class Repository {
       }
     }
   }
+
+  Future<T> _apiCallModel<T>({
+    required ModelApiCallback<T> request,
+    String noDataMessage = ApiErrorStrings.somethingWrongErrorMsg,
+  }) async {
+    try {
+      final response = await request();
+      if (response != null) {
+        return response as T;
+      } else {
+        throw Exception(response ?? noDataMessage);
+      }
+    } on String {
+      rethrow;
+    } on DioException catch (error) {
+      if (error.response == null) {
+        throw Exception(ApiErrorStrings.noInternetMsg);
+      }
+
+      switch (error.response!.statusCode) {
+        case 500:
+        case 503:
+        case 504:
+        case 403:
+        case 422:
+        case 404:
+        default:
+          final response = InvalidResponseModel.fromJson(
+            error.response!.data as Map<String, dynamic>,
+          );
+          throw Exception(response.message ?? '');
+      }
+    }
+  }
 }

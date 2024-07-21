@@ -24,3 +24,5 @@ enum EventMode {
   online,
   offline,
 }
+
+enum ChatOptions { documents, database }
