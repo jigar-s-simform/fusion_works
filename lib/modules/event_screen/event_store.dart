@@ -20,7 +20,7 @@ abstract class _EventStore with Store {
 
   @action
   Future<void> updateEvent(Event updatedEvent) async {
-    int index = events.indexWhere((event) => event.id == updatedEvent.id);
+    var index = events.indexWhere((event) => event.id == updatedEvent.id);
     if (index != -1) {
       events[index] = updatedEvent;
     }
@@ -31,23 +31,39 @@ abstract class _EventStore with Store {
     events.removeWhere((event) => event.id == eventId);
   }
 
+  List<Event> generateStaticEvents() {
+    final List<Event> events = [];
+    final List<DateTime> eventDates = [DateTime(2024, 7, 21)];
+
+    final List<int> durationsInMinutes = [30, 60, 120];
+
+    for (int i = 0; i < 1; i++) {
+      final DateTime startTime = eventDates[i].add(Duration(hours: i + 1));
+      final DateTime endTime = startTime.add(Duration(
+        minutes: durationsInMinutes[i % durationsInMinutes.length],
+      ));
+
+      events.add(Event(
+        id: i + 1,
+        createdAt: DateTime(2024, 6, 21),
+        updatedAt: DateTime(2024, 6, 1),
+        title: 'Sample Event ${i + 1}',
+        description: 'Sample description ${i + 1}',
+        startDate: eventDates[i],
+        endDate: eventDates[i],
+        startTime: startTime,
+        endTime: endTime,
+        emode: (i % 2 == 0) ? EventMode.ONLINE : EventMode.OFFLINE,
+        etype: EventType.EVENT,
+      ));
+    }
+    return events;
+  }
+
   @action
   Future<void> getAllEvents() async {
-    events = ObservableList.of([
-      Event(
-        id: 1,
-        createdAt: DateTime.now(),
-        updatedAt: DateTime.now(),
-        title: 'Sample Event 1',
-        description: 'Sample description 1',
-        startDate: DateTime.now(),
-        endDate: DateTime.now().add(const Duration(days: 1)),
-        startTime: DateTime.now(),
-        endTime: DateTime.now().add(const Duration(hours: 2)),
-        emode: EventMode.ONLINE,
-        etype: EventType.EVENT,
-      ),
-    ]);
+    events = ObservableList.of(generateStaticEvents());
+    await fetchAllEvents();
   }
 
   @action
@@ -62,7 +78,7 @@ abstract class _EventStore with Store {
       errorMessage = '';
       final result = await Repository.instance.getEvents();
       if (result?.events != null) {
-        events = result!.events;
+        if (result!.events.isNotEmpty) events = result!.events;
       }
     } catch (e) {
       errorMessage = e.toString();
