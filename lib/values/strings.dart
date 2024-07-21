@@ -67,5 +67,4 @@ class AssetsString {
   static const String callIcon = 'assets/icons/ic_call.svg';
   static const String employeeCardIcon = 'assets/icons/ic_employee_card.svg';
   static const String logoutIcon = 'assets/icons/ic_logout.svg';
-
 }
